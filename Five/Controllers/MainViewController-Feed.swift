@@ -50,6 +50,8 @@ extension MainViewController {
             let deadlineTime = DispatchTime.now() + .milliseconds(200 * i)
             DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
                 card.isHidden = false
+            }
+        }
         for (i, card) in feedCards.enumerated() {
             let deadlineTime = DispatchTime.now() + .milliseconds(200 * i)
             DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
@@ -119,7 +121,7 @@ extension MainViewController {
             if feedExpanded {
                 resetAllFeedCardsAnimation()
             } else {
-                expandFirstFeedCellAnimation()
+                expandAndShowAddAnimation()
             }
         }
     }
