@@ -18,9 +18,11 @@ class MainViewController: UIViewController {
     var backgroundGradientView: GradientView!
     var backgroundGradient: GRADIENT!
     
+    var mainCardFrame: CGRect!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        mainCardFrame = CGRect(x: 10, y: 50, width: view.frame.width - 40, height: view.frame.width - 80)
         initUI()
     }
     
@@ -64,12 +66,17 @@ class MainViewController: UIViewController {
             } else {
                 gradient = gradients[1]
             }
-            let yVal = (-20 * i) + 500
+            let yVal = (100 * i) + 100
             let width = Int(self.view.frame.width - 40)
             let card = TaskCellView(frame: CGRect(x: 20, y: yVal, width: width, height: 80), gradient: gradient)
             cards.append(card)
             card.animation = "slideUp"
             card.duration = 1.0
+        }
+        var zVal = backgroundGradientView.layer.zPosition + 5
+        for card in cards {
+            card.layer.zPosition = CGFloat(zVal)
+            zVal = zVal - 1
         }
         
         for (i, card) in cards.enumerated() {
@@ -81,12 +88,37 @@ class MainViewController: UIViewController {
         }
     }
     
+    func expandFirstCellAnimation() {
+        for i in (1..<5) {
+            let yVal = (20 * i) + 190
+            let width = Int(self.view.frame.width - 40)
+            let frame = CGRect(x: 10, y: yVal, width: width, height: 80)
+            let deadlineTime = DispatchTime.now() + .milliseconds(200 * i)
+            DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+                self.cards[i].animate(toFrame: frame)
+            }
+        }
+        cards[0].animate(toFrame: mainCardFrame)
+    }
+    
+    func resetAllCardsAnimation() {
+        for (i, card) in cards.enumerated() {
+            let yVal = (100 * i) + 100
+            let width = Int(self.view.frame.width - 40)
+            card.frame = CGRect(x: 20, y: yVal, width: width, height: 80)
+            let deadlineTime = DispatchTime.now() + .milliseconds(200 * i)
+            DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+                card.animate()
+            }
+        }
+    }
+    
     func tappedCell() {
         
     }
     
     @objc func tappedAdd() {
-        cards[0].expand()
+        resetAllCardsAnimation()
     }
 
 
