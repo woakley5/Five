@@ -16,10 +16,12 @@ class TaskCellView: SpringView {
     var taskSubtitleLabel: UILabel!
     var gradient: GRADIENT!
     var originalFrame: CGRect!
+    var task: Task!
 
 
-    init(frame: CGRect, gradient: GRADIENT) {
+    init(frame: CGRect, gradient: GRADIENT, task: Task) {
         super.init(frame: frame)
+        self.task = task
         originalFrame = frame
         self.gradient = gradient
         initBackground()
@@ -52,14 +54,30 @@ class TaskCellView: SpringView {
         taskTitleLabel = UILabel(frame: CGRect(x: 20, y: 10, width: background.frame.width/2, height: 30))
         taskTitleLabel.font = UIFont(name: "Quicksand-Bold", size: 18)
         taskTitleLabel.textColor = .white
-        taskTitleLabel.text = "Event!"
+        taskTitleLabel.text = task.text
         background.addSubview(taskTitleLabel)
         
-        taskSubtitleLabel = UILabel(frame: CGRect(x: 30, y: 30, width: background.frame.width - 30, height: 40))
-        taskSubtitleLabel.font = UIFont(name: "Quicksand-Medium", size: 14)
-        taskSubtitleLabel.textColor = .white
-        taskSubtitleLabel.text = "> You have 3 days remaining"
-        background.addSubview(taskSubtitleLabel)
+        if let dueDate = task.dueDate {
+            let date = dueDate.addingTimeInterval(60.0 * 60.0 * 23.0 + 60.0 * 59.0)
+            guard let daysLeft = Calendar.current.dateComponents([.day], from: task.createDate, to: date).day else {
+                print ("failed to get days left")
+                return
+            }
+            
+            taskSubtitleLabel = UILabel(frame: CGRect(x: 30, y: 30, width: background.frame.width - 30, height: 40))
+            taskSubtitleLabel.font = UIFont(name: "Quicksand-Medium", size: 14)
+            taskSubtitleLabel.textColor = .white
+            
+            if daysLeft == 0 {
+                taskSubtitleLabel.text = "> Due today"
+            } else if daysLeft > 0 {
+                taskSubtitleLabel.text = "> Due in \(daysLeft) day\(daysLeft > 1 ? "s" : "")"
+            } else {
+                taskSubtitleLabel.text = "> Was due \(-daysLeft) day\(daysLeft > 1 ? "s" : "") ago"
+            }
+            
+            background.addSubview(taskSubtitleLabel)
+        }
     }
     
 
