@@ -79,7 +79,6 @@ extension MainViewController {
     func expandAndShowAddAnimation() {
         feedExpanded = true
         for i in (0..<5) {
-
             let yVal = (20 * i) + 400
             let width = Int(self.view.frame.width - 40)
             let frame = CGRect(x: 20, y: yVal, width: width, height: 80)
@@ -106,13 +105,28 @@ extension MainViewController {
     }
     
     func showAddEvent() {
-        addEventCell = AddEventCellView(frame: CGRect(x: 20, y: 60, width: view.frame.width - 40, height: view.frame.width - 40))
-        addEventCell.backgroundColor = .blue
+        addButton.setImage(UIImage(named:"cancelIcon"), for: .normal)
+        addEventCell = AddEventCellView(frame: CGRect(x: 20, y: 100, width: view.frame.width - 40, height: view.frame.width - 100))
         view.addSubview(addEventCell)
+        addEventCell.doneButton.addTarget(self, action: #selector(saveEvent), for: .touchUpInside)
         expandAndShowAddAnimation()
     }
     
-
+    @objc func saveEvent() {
+        //TODO: get data from addEventCell and save to Task and TaskList
+        dismissAddEvent()
+    }
+    
+    func dismissAddEvent() {
+        addButton.setImage(UIImage(named:"addIcon"), for: .normal)
+        UIView.animate(withDuration: 0.5, animations: {
+            self.addEventCell.frame = CGRect(x: 500, y: 100, width: self.view.frame.width - 40, height: self.view.frame.width - 100)
+        }) { (done) in
+            self.feedExpanded = false
+            self.addEventCell.removeFromSuperview()
+            self.resetAllFeedCardsAnimation()
+        }
+    }
     
     @objc func tappedFeedCell(sender: UITapGestureRecognizer) {
         let view = sender.view as! TaskCellView

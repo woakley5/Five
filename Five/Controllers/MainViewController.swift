@@ -127,8 +127,10 @@ class MainViewController: UIViewController {
     }
     
     @objc func tappedAddButton() {
-        if currentState == .feed {
+        if currentState == .feed && !feedExpanded {
             showAddEvent()
+        } else if feedExpanded {
+            dismissAddEvent()
         }
     }
 }
