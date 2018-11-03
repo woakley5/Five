@@ -19,10 +19,12 @@ class MainViewController: UIViewController {
     var backgroundGradient: GRADIENT!
     
     var mainCardFrame: CGRect!
+    
+    var expanded = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        mainCardFrame = CGRect(x: 10, y: 50, width: view.frame.width - 40, height: view.frame.width - 80)
+        mainCardFrame = CGRect(x: 20, y: 100, width: view.frame.width - 40, height: view.frame.width - 80)
         initUI()
     }
     
@@ -70,9 +72,13 @@ class MainViewController: UIViewController {
             let width = Int(self.view.frame.width - 40)
             let card = TaskCellView(frame: CGRect(x: 20, y: yVal, width: width, height: 80), gradient: gradient)
             cards.append(card)
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappedCell(sender:)))
+            card.addGestureRecognizer(tapGestureRecognizer)
             card.animation = "slideUp"
             card.duration = 1.0
+            card.tag = i
         }
+        
         var zVal = backgroundGradientView.layer.zPosition + 5
         for card in cards {
             card.layer.zPosition = CGFloat(zVal)
@@ -89,32 +95,42 @@ class MainViewController: UIViewController {
     }
     
     func expandFirstCellAnimation() {
+        expanded = true
         for i in (1..<5) {
-            let yVal = (20 * i) + 190
+            let yVal = (20 * i) + 400
             let width = Int(self.view.frame.width - 40)
-            let frame = CGRect(x: 10, y: yVal, width: width, height: 80)
-            let deadlineTime = DispatchTime.now() + .milliseconds(200 * i)
+            let frame = CGRect(x: 20, y: yVal, width: width, height: 80)
+            let deadlineTime = DispatchTime.now()
             DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
                 self.cards[i].animate(toFrame: frame)
             }
         }
-        cards[0].animate(toFrame: mainCardFrame)
-    }
-    
-    func resetAllCardsAnimation() {
-        for (i, card) in cards.enumerated() {
-            let yVal = (100 * i) + 100
-            let width = Int(self.view.frame.width - 40)
-            card.frame = CGRect(x: 20, y: yVal, width: width, height: 80)
-            let deadlineTime = DispatchTime.now() + .milliseconds(200 * i)
-            DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-                card.animate()
-            }
+        let deadlineTime = DispatchTime.now() + .milliseconds(200)
+        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+            self.cards[0].animate(toFrame: self.mainCardFrame)
         }
     }
     
-    func tappedCell() {
-        
+    func resetAllCardsAnimation() {
+        expanded = false
+        for (i, card) in cards.enumerated() {
+            let yVal = (100 * i) + 100
+            let width = Int(self.view.frame.width - 40)
+            let frame = CGRect(x: 20, y: yVal, width: width, height: 80)
+            card.animate(toFrame: frame)
+        }
+    }
+    
+    @objc func tappedCell(sender: UITapGestureRecognizer) {
+        let view = sender.view as! TaskCellView
+        let tag = view.tag
+        if tag == 0 {
+            if expanded {
+                resetAllCardsAnimation()
+            } else {
+                expandFirstCellAnimation()
+            }
+        }
     }
     
     @objc func tappedAdd() {

@@ -57,7 +57,7 @@ class TaskCellView: SpringView {
     func animate(toFrame: CGRect) {
         UIView.animate(withDuration: 0.5) {
             self.frame = toFrame
-            self.background.frame = toFrame
+            self.background.frame = CGRect(x: 0, y: 0, width: toFrame.width, height: toFrame.height)
         }
     }
     
