@@ -23,7 +23,7 @@ class MainViewController: UIViewController {
     //MAIN UI InstanceVariables
     var titleLabel: LTMorphingLabel!
     var addButton: UIButton!
-    var backgroundGradientView: GradientView!
+    var backgroundGradientView: UIView! //GradientView!
     var backgroundGradient: GRADIENT!
     var mainCardFrame: CGRect!
     var backlogButton: UIButton!
@@ -31,6 +31,7 @@ class MainViewController: UIViewController {
     var completedButton: UIButton!
     
     //FEED INSTANCE VARIABLES
+    var addEventCell: AddEventCellView!
     var feedCards: [TaskCellView] = []
     var feedExpanded = false
     
@@ -45,7 +46,6 @@ class MainViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        animateLabel(withText: "five")
         switchStateTo(.feed)
     }
     
@@ -54,13 +54,13 @@ class MainViewController: UIViewController {
     }
     
     func initCommonUI() {
-        backgroundGradient = BACKGROUND_GRADIENT()
-        backgroundGradientView = GradientView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
-        backgroundGradientView.colors = backgroundGradient!.colors
-        backgroundGradientView.locations = backgroundGradient!.locations
-        backgroundGradientView.direction = backgroundGradient!.direction
+        //backgroundGradient = BACKGROUND_GRADIENT()
+        backgroundGradientView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
+        //backgroundGradientView.colors = backgroundGradient!.colors
+        //backgroundGradientView.locations = backgroundGradient!.locations
+        //backgroundGradientView.direction = backgroundGradient!.direction
+        view.backgroundColor = UIColor("#242C49")
         view.addSubview(backgroundGradientView)
-        //view.backgroundColor = UIColor("#242C49")
         titleLabel = LTMorphingLabel(frame: CGRect(x: 20, y: 10, width: 200, height: 90))
         titleLabel.textAlignment = .left
         titleLabel.textColor = .white
@@ -112,19 +112,24 @@ class MainViewController: UIViewController {
     func switchStateTo(_ state: STATES) {
         currentState = state
         if state == .backlog {
+            hideFeedCells()
+            animateLabel(withText: "backlog")
             
         } else if state == .feed {
-            print("Showing feed cells")
             initFeedCells()
+            animateLabel(withText: "my five")
             
         } else if state == .completed {
             hideFeedCells()
+            animateLabel(withText: "completed")
+
         }
     }
     
     @objc func tappedAddButton() {
-        print("Tapped add")
+        if currentState == .feed {
+            showAddEvent()
+        }
     }
-
 }
 

@@ -24,8 +24,8 @@ extension MainViewController {
             let width = Int(self.view.frame.width - 40)
             let card = TaskCellView(frame: CGRect(x: 20, y: yVal, width: width, height: 80), gradient: gradient)
             feedCards.append(card)
-            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappedFeedCell(sender:)))
-            card.addGestureRecognizer(tapGestureRecognizer)
+            //let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappedFeedCell(sender:)))
+            //card.addGestureRecognizer(tapGestureRecognizer)
             card.animation = "slideUp"
             card.duration = 1.0
             card.tag = i
@@ -70,9 +70,9 @@ extension MainViewController {
         feedCards.removeAll()
     }
     
-    func expandFirstFeedCellAnimation() {
+    func expandAndShowAddAnimation() {
         feedExpanded = true
-        for i in (1..<5) {
+        for i in (0..<5) {
             let yVal = (20 * i) + 400
             let width = Int(self.view.frame.width - 40)
             let frame = CGRect(x: 20, y: yVal, width: width, height: 80)
@@ -83,12 +83,7 @@ extension MainViewController {
                 }
             }
         }
-        let deadlineTime = DispatchTime.now() + .milliseconds(200)
-        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-            self.feedCards[0].animate(toFrame: self.mainCardFrame) {
-                print("done animating expand first")
-            }
-        }
+        addEventCell.animate()
     }
     
     func resetAllFeedCardsAnimation() {
@@ -103,7 +98,14 @@ extension MainViewController {
         }
     }
     
-    @objc func tappedFeedCell(sender: UITapGestureRecognizer) {
+    func showAddEvent() {
+        addEventCell = AddEventCellView(frame: CGRect(x: 20, y: 60, width: view.frame.width - 40, height: view.frame.width - 40))
+        addEventCell.backgroundColor = .blue
+        view.addSubview(addEventCell)
+        expandAndShowAddAnimation()
+    }
+    
+    /*@objc func tappedFeedCell(sender: UITapGestureRecognizer) {
         let view = sender.view as! TaskCellView
         let tag = view.tag
         if tag == 0 {
@@ -113,5 +115,5 @@ extension MainViewController {
                 expandFirstFeedCellAnimation()
             }
         }
-    }
+    }*/
 }

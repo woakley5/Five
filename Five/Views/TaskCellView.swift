@@ -13,8 +13,10 @@ class TaskCellView: SpringView {
     
     var background: GradientView!
     var taskTitleLabel: UILabel!
+    var taskSubtitleLabel: UILabel!
     var gradient: GRADIENT!
     var originalFrame: CGRect!
+    
 
     init(frame: CGRect, gradient: GRADIENT) {
         super.init(frame: frame)
@@ -52,6 +54,12 @@ class TaskCellView: SpringView {
         taskTitleLabel.textColor = .white
         taskTitleLabel.text = "Event!"
         background.addSubview(taskTitleLabel)
+        
+        taskSubtitleLabel = UILabel(frame: CGRect(x: 30, y: 30, width: background.frame.width - 30, height: 40))
+        taskSubtitleLabel.font = UIFont(name: "Quicksand-Medium", size: 14)
+        taskSubtitleLabel.textColor = .white
+        taskSubtitleLabel.text = "> You have 3 days remaining"
+        background.addSubview(taskSubtitleLabel)
     }
     
     func animate(toFrame: CGRect, completion: @escaping () -> Void) {
