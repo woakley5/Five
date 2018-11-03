@@ -17,6 +17,7 @@ class MainViewController: UIViewController {
     var cards: [TaskCellView] = []
     var backgroundGradientView: GradientView!
     var backgroundGradient: GRADIENT!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
