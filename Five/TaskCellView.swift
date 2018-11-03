@@ -12,9 +12,11 @@ import UIColor_Hex_Swift
 class TaskCellView: SpringView {
     
     var background: GradientView!
+    var gradient: GRADIENT!
 
-    override init(frame: CGRect) {
+    init(frame: CGRect, gradient: GRADIENT) {
         super.init(frame: frame)
+        self.gradient = gradient
         initBackground()
         initLayer()
     }
@@ -34,9 +36,9 @@ class TaskCellView: SpringView {
     
     private func initBackground() {
         background = GradientView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
-        background.colors = [UIColor("#AA7DE6"), UIColor("#81BFFF")]
-        background.locations = [0.2, 0.8]
-        background.direction = .horizontal
+        background.colors = gradient!.colors
+        background.locations = gradient!.locations
+        background.direction = gradient!.direction
         addSubview(background)
     }
     

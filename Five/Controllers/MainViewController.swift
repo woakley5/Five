@@ -8,12 +8,15 @@
 
 import UIKit
 import UIColor_Hex_Swift
+import GradientView
 
 class MainViewController: UIViewController {
     
     var titleLabel: LTMorphingLabel!
     var addButton: UIButton!
     var cards: [TaskCellView] = []
+    var backgroundGradientView: GradientView!
+    var backgroundGradient: GRADIENT!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +33,13 @@ class MainViewController: UIViewController {
     }
     
     func initUI() {
-        view.backgroundColor = UIColor("#242C49")
+        backgroundGradient = BACKGROUND_GRADIENT()
+        backgroundGradientView = GradientView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
+        backgroundGradientView.colors = backgroundGradient!.colors
+        backgroundGradientView.locations = backgroundGradient!.locations
+        backgroundGradientView.direction = backgroundGradient!.direction
+        view.addSubview(backgroundGradientView)
+        //view.backgroundColor = UIColor("#242C49")
         titleLabel = LTMorphingLabel(frame: CGRect(x: 20, y: 10, width: 200, height: 90))
         titleLabel.textAlignment = .left
         titleLabel.textColor = .white
@@ -46,10 +55,17 @@ class MainViewController: UIViewController {
     }
     
     func initCells() {
+        let gradients: [GRADIENT] = [BLUE_GRADIENT(), PINK_GRADIENT()]
         for x in 0..<5 {
+            let gradient: GRADIENT
+            if x % 2 == 0 {
+                gradient = gradients[0]
+            } else {
+                gradient = gradients[1]
+            }
             let yVal = (100 * x) + 100
             let width = Int(self.view.frame.width - 40)
-            let card = TaskCellView(frame: CGRect(x: 20, y: yVal, width: width, height: 80))
+            let card = TaskCellView(frame: CGRect(x: 20, y: yVal, width: width, height: 80), gradient: gradient)
             cards.append(card)
             card.animation = "slideUp"
             card.duration = 1.0
@@ -62,6 +78,10 @@ class MainViewController: UIViewController {
                 card.animate()
             }
         }
+    }
+    
+    func tappedCell() {
+        
     }
     
     @objc func tappedAdd() {
