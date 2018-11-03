@@ -45,7 +45,7 @@ class MainViewController: UIViewController {
         titleLabel.textColor = .white
         titleLabel.morphingEffect = .evaporate
         titleLabel.morphingDuration = 1.5
-        titleLabel.font = UIFont(name: "Avenir", size: 36)
+        titleLabel.font = UIFont(name: "Quicksand-Bold", size: 36)
         view.addSubview(titleLabel)
         
         addButton = UIButton(frame: CGRect(x: view.frame.width - 60, y: 35, width: 40, height: 40))
@@ -56,14 +56,14 @@ class MainViewController: UIViewController {
     
     func initCells() {
         let gradients: [GRADIENT] = [BLUE_GRADIENT(), PINK_GRADIENT()]
-        for x in 0..<5 {
+        for i in 0..<5 {
             let gradient: GRADIENT
-            if x % 2 == 0 {
+            if i % 2 == 0 {
                 gradient = gradients[0]
             } else {
                 gradient = gradients[1]
             }
-            let yVal = (100 * x) + 100
+            let yVal = (-20 * i) + 500
             let width = Int(self.view.frame.width - 40)
             let card = TaskCellView(frame: CGRect(x: 20, y: yVal, width: width, height: 80), gradient: gradient)
             cards.append(card)
@@ -85,7 +85,7 @@ class MainViewController: UIViewController {
     }
     
     @objc func tappedAdd() {
-        print("yay")
+        cards[0].expand()
     }
 
 

@@ -24,7 +24,7 @@ protocol GRADIENT {
 
 struct BACKGROUND_GRADIENT: GRADIENT {
     var colors = [UIColor("#392C79"), UIColor("#A7D8FF")]
-    var locations: [CGFloat] = [0.2, 0.9]
+    var locations: [CGFloat] = [0.5, 0.9]
     var direction = GradientView.Direction.vertical
 }
 

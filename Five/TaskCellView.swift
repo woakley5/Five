@@ -12,6 +12,7 @@ import UIColor_Hex_Swift
 class TaskCellView: SpringView {
     
     var background: GradientView!
+    var taskTitleLabel: UILabel!
     var gradient: GRADIENT!
 
     init(frame: CGRect, gradient: GRADIENT) {
@@ -19,6 +20,7 @@ class TaskCellView: SpringView {
         self.gradient = gradient
         initBackground()
         initLayer()
+        initUIElements()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -40,6 +42,21 @@ class TaskCellView: SpringView {
         background.locations = gradient!.locations
         background.direction = gradient!.direction
         addSubview(background)
+    }
+    
+    private func initUIElements() {
+        taskTitleLabel = UILabel(frame: CGRect(x: 20, y: 10, width: background.frame.width/2, height: 30))
+        taskTitleLabel.font = UIFont(name: "Quicksand-Bold", size: 18)
+        taskTitleLabel.textColor = .white
+        taskTitleLabel.text = "Event!"
+        background.addSubview(taskTitleLabel)
+    }
+    
+    func expand() {
+        UIView.animate(withDuration: 0.5) {
+            self.frame = CGRect(x: self.frame.minX, y: self.frame.minY, width: self.frame.width, height: self.frame.height + 300)
+            self.background.frame = CGRect(x: self.frame.minX, y: self.frame.minY, width: self.frame.width, height: self.frame.height + 100)
+        }
     }
     
 }
