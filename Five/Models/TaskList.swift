@@ -11,7 +11,7 @@ import UIKit
 class TaskList: NSObject {
     static var taskList: [Task] = []
     
-    func addSampleTasks() {
+    static func addSampleTasks() {
         let calendar = Calendar.current
 
         var components = DateComponents()
@@ -24,36 +24,53 @@ class TaskList: NSObject {
 
         let newDate = calendar.date(from: components)
 
-        createTask(text: "Read Huck Finn chapters 1-5")
-        createTask(text: "Win Cal Hacks!", dueDate: newDate!)
-        createTask(text: "Fix login screen bug in todo app")
+        createTask(text: "Read Huck Finn chapters 1-5", tag: TaskTag.work)
+        createTask(text: "Win Cal Hacks!", tag: TaskTag.personal, dueDate: newDate!)
+        createTask(text: "Fix login screen bug in todo app", tag: TaskTag.work)
         
         components.day = 5
         let newDate1 = calendar.date(from: components)
-        createTask(text: "Allow more than 5 todos?", dueDate: newDate1!)
-        createTask(text: "Call mom back")
+        createTask(text: "Allow more than 5 todos?", tag: TaskTag.work, dueDate: newDate1!)
+        createTask(text: "Pay phone bill", tag: TaskTag.finance)
         
         components.month = 10
         components.day = 28
         let newDate2 = calendar.date(from: components)
-        createTask(text: "Find dress for wedding", dueDate: newDate2!)
+        createTask(text: "Find dress for wedding", tag: TaskTag.home, dueDate: newDate2!)
     }
     
-    func createTask(text: String) {
-        let task = Task(text: text)
-        createTaskHelper(task)
+    static func createTask(text: String, tag: TaskTag) {
+        let task = Task(text: text, tag: tag)
+        TaskList.createTaskHelper(task)
     }
     
-    func createTask(text: String, dueDate: Date) {
-        let task = Task(text: text, dueDate: dueDate)
-        createTaskHelper(task)
+    static func createTask(text: String, tag: TaskTag, dueDate: Date) {
+        let task = Task(text: text, tag: tag, dueDate: dueDate)
+        TaskList.createTaskHelper(task)
     }
     
-    func createTaskHelper(_ task: Task) {
-        TaskList.taskList.append(task)
+    static func createTaskHelper(_ task: Task) {
+        if taskList.count < 5 {
+            task.status = TaskStatus.active
+        }
+        taskList.append(task)
     }
     
-    func getTasksByStatus(status: TaskStatus) -> [Task] {
-        return TaskList.taskList.filter { $0.status == status }
+    static func getTasksByStatus(status: TaskStatus) -> [Task] {
+        return taskList.filter { $0.status == status }
+    }
+    
+    static func getCompletedToday() -> Int {
+        let completed = getTasksByStatus(status: TaskStatus.completed)
+        
+        let date = Date()
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: date)
+        
+        return completed.filter { $0.completeDate != nil && $0.completeDate! > startOfDay }.count
+    }
+    
+    static func getNumTasksCompleted() -> Int {
+        return taskList.count
     }
 }

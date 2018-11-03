@@ -10,5 +10,6 @@ target 'Five' do
   # Pods for Five
   pod 'GradientView'
   pod 'UIColor_Hex_Swift', '~> 4.2.0'
+  pod 'BRYXBanner'
   
 end
