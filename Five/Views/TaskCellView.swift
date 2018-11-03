@@ -16,7 +16,7 @@ class TaskCellView: SpringView {
     var taskSubtitleLabel: UILabel!
     var gradient: GRADIENT!
     var originalFrame: CGRect!
-    
+
 
     init(frame: CGRect, gradient: GRADIENT) {
         super.init(frame: frame)
@@ -62,6 +62,7 @@ class TaskCellView: SpringView {
         background.addSubview(taskSubtitleLabel)
     }
     
+
     func animate(toFrame: CGRect, completion: @escaping () -> Void) {
         UIView.animate(withDuration: 0.5, animations: {
             self.frame = toFrame
@@ -70,5 +71,4 @@ class TaskCellView: SpringView {
             completion()
         }
     }
-    
 }

@@ -50,6 +50,10 @@ extension MainViewController {
             let deadlineTime = DispatchTime.now() + .milliseconds(200 * i)
             DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
                 card.isHidden = false
+        for (i, card) in feedCards.enumerated() {
+            let deadlineTime = DispatchTime.now() + .milliseconds(200 * i)
+            DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+                self.view.addSubview(card)
                 card.animate()
             }
         }
@@ -73,6 +77,7 @@ extension MainViewController {
     func expandAndShowAddAnimation() {
         feedExpanded = true
         for i in (0..<5) {
+
             let yVal = (20 * i) + 400
             let width = Int(self.view.frame.width - 40)
             let frame = CGRect(x: 20, y: yVal, width: width, height: 80)
@@ -105,7 +110,9 @@ extension MainViewController {
         expandAndShowAddAnimation()
     }
     
-    /*@objc func tappedFeedCell(sender: UITapGestureRecognizer) {
+
+    
+    @objc func tappedFeedCell(sender: UITapGestureRecognizer) {
         let view = sender.view as! TaskCellView
         let tag = view.tag
         if tag == 0 {
@@ -115,5 +122,6 @@ extension MainViewController {
                 expandFirstFeedCellAnimation()
             }
         }
-    }*/
+    }
+
 }

@@ -59,7 +59,7 @@ class MainViewController: UIViewController {
         //backgroundGradientView.colors = backgroundGradient!.colors
         //backgroundGradientView.locations = backgroundGradient!.locations
         //backgroundGradientView.direction = backgroundGradient!.direction
-        view.backgroundColor = UIColor("#242C49")
+        backgroundGradientView.backgroundColor = UIColor("#242C49")
         view.addSubview(backgroundGradientView)
         titleLabel = LTMorphingLabel(frame: CGRect(x: 20, y: 10, width: 200, height: 90))
         titleLabel.textAlignment = .left
