@@ -14,9 +14,11 @@ class TaskCellView: SpringView {
     var background: GradientView!
     var taskTitleLabel: UILabel!
     var gradient: GRADIENT!
+    var originalFrame: CGRect!
 
     init(frame: CGRect, gradient: GRADIENT) {
         super.init(frame: frame)
+        originalFrame = frame
         self.gradient = gradient
         initBackground()
         initLayer()
@@ -52,10 +54,10 @@ class TaskCellView: SpringView {
         background.addSubview(taskTitleLabel)
     }
     
-    func expand() {
+    func animate(toFrame: CGRect) {
         UIView.animate(withDuration: 0.5) {
-            self.frame = CGRect(x: self.frame.minX, y: self.frame.minY, width: self.frame.width, height: self.frame.height + 300)
-            self.background.frame = CGRect(x: self.frame.minX, y: self.frame.minY, width: self.frame.width, height: self.frame.height + 100)
+            self.frame = toFrame
+            self.background.frame = CGRect(x: 0, y: 0, width: toFrame.width, height: toFrame.height)
         }
     }
     
