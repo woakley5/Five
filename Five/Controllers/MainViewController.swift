@@ -18,6 +18,8 @@ class MainViewController: UIViewController {
         case completed
     }
     
+    var currentState: STATES!
+    
     //MAIN UI InstanceVariables
     var titleLabel: LTMorphingLabel!
     var addButton: UIButton!
@@ -78,27 +80,45 @@ class MainViewController: UIViewController {
         let yVal = view.frame.height * 0.9
         let dim: CGFloat = 50
         let widthBase = view.frame.width
+        
         backlogButton = UIButton(frame: CGRect(x: widthBase * 0.25 - 20, y: yVal, width: dim, height: dim))
         backlogButton.setImage(UIImage(named: "timerIcon"), for: .normal)
+        backlogButton.addTarget(self, action: #selector(tappedBacklog), for: .touchUpInside)
         view.addSubview(backlogButton)
         
         feedButton = UIButton(frame: CGRect(x: widthBase * 0.5 - 20, y: yVal, width: dim, height: dim))
         feedButton.setImage(UIImage(named: "checklistIcon"), for: .normal)
+        feedButton.addTarget(self, action: #selector(tappedFeed), for: .touchUpInside)
         view.addSubview(feedButton)
         
         completedButton = UIButton(frame: CGRect(x: widthBase * 0.75 - 20, y: yVal, width: dim, height: dim))
         completedButton.setImage(UIImage(named: "clipboardIcon"), for: .normal)
+        completedButton.addTarget(self, action: #selector(tappedCompleted), for: .touchUpInside)
         view.addSubview(completedButton)
     }
     
+    @objc func tappedBacklog() {
+        switchStateTo(.backlog)
+    }
+    
+    @objc func tappedFeed() {
+        switchStateTo(.feed)
+    }
+    
+    @objc func tappedCompleted() {
+        switchStateTo(.completed)
+    }
+    
     func switchStateTo(_ state: STATES) {
+        currentState = state
         if state == .backlog {
             
         } else if state == .feed {
+            print("Showing feed cells")
             initFeedCells()
             
         } else if state == .completed {
-            
+            hideFeedCells()
         }
     }
     

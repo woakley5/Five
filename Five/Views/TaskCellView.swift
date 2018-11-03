@@ -54,10 +54,12 @@ class TaskCellView: SpringView {
         background.addSubview(taskTitleLabel)
     }
     
-    func animate(toFrame: CGRect) {
-        UIView.animate(withDuration: 0.5) {
+    func animate(toFrame: CGRect, completion: @escaping () -> Void) {
+        UIView.animate(withDuration: 0.5, animations: {
             self.frame = toFrame
             self.background.frame = CGRect(x: 0, y: 0, width: toFrame.width, height: toFrame.height)
+        }) { (done) in
+            completion()
         }
     }
     

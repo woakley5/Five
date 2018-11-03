@@ -10,9 +10,7 @@ import Foundation
 import UIKit
 
 extension MainViewController {
-    
 
-    
     func initFeedCells() {
         let gradients: [GRADIENT] = [BLUE_GRADIENT(), PINK_GRADIENT()]
         for i in 0..<5 {
@@ -39,13 +37,37 @@ extension MainViewController {
             zVal = zVal - 1
         }
         
+        for card in feedCards {
+            card.isHidden = true
+            self.view.addSubview(card)
+        }
+        
+        feedExpanded = false
         for (i, card) in feedCards.enumerated() {
+            let yVal = (100 * i) + 100
+            let width = Int(self.view.frame.width - 40)
+            card.frame = CGRect(x: 20, y: yVal, width: width, height: 80)
             let deadlineTime = DispatchTime.now() + .milliseconds(200 * i)
             DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-                self.view.addSubview(card)
+                card.isHidden = false
                 card.animate()
             }
         }
+    }
+
+    func hideFeedCells() {
+        feedExpanded = false
+        let width = Int(self.view.frame.width - 40)
+        let awayFrame = CGRect(x: 20, y: 1000, width: width, height: 80)
+        for card in feedCards {
+            let deadlineTime = DispatchTime.now()
+            DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+                card.animate(toFrame: awayFrame) {
+                    card.removeFromSuperview()
+                }
+            }
+        }
+        feedCards.removeAll()
     }
     
     func expandFirstFeedCellAnimation() {
@@ -56,12 +78,16 @@ extension MainViewController {
             let frame = CGRect(x: 20, y: yVal, width: width, height: 80)
             let deadlineTime = DispatchTime.now()
             DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-                self.feedCards[i].animate(toFrame: frame)
+                self.feedCards[i].animate(toFrame: frame) {
+                    print("Done animating expand")
+                }
             }
         }
         let deadlineTime = DispatchTime.now() + .milliseconds(200)
         DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-            self.feedCards[0].animate(toFrame: self.mainCardFrame)
+            self.feedCards[0].animate(toFrame: self.mainCardFrame) {
+                print("done animating expand first")
+            }
         }
     }
     
@@ -71,7 +97,9 @@ extension MainViewController {
             let yVal = (100 * i) + 100
             let width = Int(self.view.frame.width - 40)
             let frame = CGRect(x: 20, y: yVal, width: width, height: 80)
-            card.animate(toFrame: frame)
+            card.animate(toFrame: frame) {
+                print("Done animating reset")
+            }
         }
     }
     
