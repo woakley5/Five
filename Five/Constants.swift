@@ -35,7 +35,7 @@ struct PINK_GRADIENT: GRADIENT {
 }
 
 struct BLUE_GRADIENT: GRADIENT {
-    var colors = [UIColor("#A7D8FF"), UIColor("#808AFF")]
+    var colors = [UIColor("#5CCAE5"), UIColor("#0CCEC2")]
     var locations: [CGFloat] = [0.2, 0.8]
     var direction = GradientView.Direction.horizontal
 }

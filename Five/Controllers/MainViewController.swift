@@ -18,10 +18,12 @@ class MainViewController: UIViewController {
         case completed
     }
     
+    var currentState: STATES!
+    
     //MAIN UI InstanceVariables
     var titleLabel: LTMorphingLabel!
     var addButton: UIButton!
-    var backgroundGradientView: GradientView!
+    var backgroundGradientView: UIView! //GradientView!
     var backgroundGradient: GRADIENT!
     var mainCardFrame: CGRect!
     var backlogButton: UIButton!
@@ -29,6 +31,7 @@ class MainViewController: UIViewController {
     var completedButton: UIButton!
     
     //FEED INSTANCE VARIABLES
+    var addEventCell: AddEventCellView!
     var feedCards: [TaskCellView] = []
     var feedExpanded = false
     
@@ -43,7 +46,6 @@ class MainViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        animateLabel(withText: "five")
         switchStateTo(.feed)
     }
     
@@ -52,13 +54,13 @@ class MainViewController: UIViewController {
     }
     
     func initCommonUI() {
-        backgroundGradient = BACKGROUND_GRADIENT()
-        backgroundGradientView = GradientView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
-        backgroundGradientView.colors = backgroundGradient!.colors
-        backgroundGradientView.locations = backgroundGradient!.locations
-        backgroundGradientView.direction = backgroundGradient!.direction
+        //backgroundGradient = BACKGROUND_GRADIENT()
+        backgroundGradientView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
+        //backgroundGradientView.colors = backgroundGradient!.colors
+        //backgroundGradientView.locations = backgroundGradient!.locations
+        //backgroundGradientView.direction = backgroundGradient!.direction
+        backgroundGradientView.backgroundColor = UIColor("#242C49")
         view.addSubview(backgroundGradientView)
-        //view.backgroundColor = UIColor("#242C49")
         titleLabel = LTMorphingLabel(frame: CGRect(x: 20, y: 10, width: 200, height: 90))
         titleLabel.textAlignment = .left
         titleLabel.textColor = .white
@@ -78,33 +80,56 @@ class MainViewController: UIViewController {
         let yVal = view.frame.height * 0.9
         let dim: CGFloat = 50
         let widthBase = view.frame.width
+        
         backlogButton = UIButton(frame: CGRect(x: widthBase * 0.25 - 20, y: yVal, width: dim, height: dim))
         backlogButton.setImage(UIImage(named: "timerIcon"), for: .normal)
+        backlogButton.addTarget(self, action: #selector(tappedBacklog), for: .touchUpInside)
         view.addSubview(backlogButton)
         
         feedButton = UIButton(frame: CGRect(x: widthBase * 0.5 - 20, y: yVal, width: dim, height: dim))
         feedButton.setImage(UIImage(named: "checklistIcon"), for: .normal)
+        feedButton.addTarget(self, action: #selector(tappedFeed), for: .touchUpInside)
         view.addSubview(feedButton)
         
         completedButton = UIButton(frame: CGRect(x: widthBase * 0.75 - 20, y: yVal, width: dim, height: dim))
         completedButton.setImage(UIImage(named: "clipboardIcon"), for: .normal)
+        completedButton.addTarget(self, action: #selector(tappedCompleted), for: .touchUpInside)
         view.addSubview(completedButton)
     }
     
+    @objc func tappedBacklog() {
+        switchStateTo(.backlog)
+    }
+    
+    @objc func tappedFeed() {
+        switchStateTo(.feed)
+    }
+    
+    @objc func tappedCompleted() {
+        switchStateTo(.completed)
+    }
+    
     func switchStateTo(_ state: STATES) {
+        currentState = state
         if state == .backlog {
+            hideFeedCells()
+            animateLabel(withText: "backlog")
             
         } else if state == .feed {
             initFeedCells()
+            animateLabel(withText: "my five")
             
         } else if state == .completed {
-            
+            hideFeedCells()
+            animateLabel(withText: "completed")
+
         }
     }
     
     @objc func tappedAddButton() {
-        print("Tapped add")
+        if currentState == .feed {
+            showAddEvent()
+        }
     }
-
 }
 
