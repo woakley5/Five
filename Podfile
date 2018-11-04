@@ -13,5 +13,6 @@ target 'Five' do
   pod 'BRYXBanner'
   pod 'SkyFloatingLabelTextField'
   pod 'DatePicker', '1.0.0'
+  pod 'ChameleonFramework'
   
 end
