@@ -23,6 +23,8 @@ class MainViewController: UIViewController {
     //MAIN UI InstanceVariables
     var titleLabel: LTMorphingLabel!
     var addButton: UIButton!
+    var addSpeechButton: UIButton!
+
     var backgroundGradientView: UIView! //GradientView!
     var backgroundGradient: GRADIENT!
     var mainCardFrame: CGRect!
@@ -32,6 +34,7 @@ class MainViewController: UIViewController {
     
     //FEED INSTANCE VARIABLES
     var addEventCell: AddEventCellView!
+    var addSpeechEventCell: AddSpeechEventCellView!
     var feedCards: [TaskCellView] = []
     var feedExpanded = false
     
@@ -81,6 +84,10 @@ class MainViewController: UIViewController {
         addButton.setImage(UIImage(named: "addIcon"), for: .normal)
         addButton.addTarget(self, action: #selector(tappedAddButton), for: .touchUpInside)
         view.addSubview(addButton)
+        addSpeechButton = UIButton(frame: CGRect(x: view.frame.width - 60 - addButton.frame.width, y: 35, width: 40, height: 40))
+        addSpeechButton.setImage(UIImage(named: "addIcon"), for: .normal)
+        addSpeechButton.addTarget(self, action: #selector(tappedSpeechAddButton), for: .touchUpInside)
+        view.addSubview(addSpeechButton)
         initBottomButtons()
     }
     
@@ -153,6 +160,14 @@ class MainViewController: UIViewController {
             showAddEvent()
         } else if feedExpanded {
             dismissAddEvent()
+        }
+    }
+    
+    @objc func tappedSpeechAddButton() {
+        if currentState == .feed && !feedExpanded {
+            showAddEvent(speech: true)
+        } else if feedExpanded {
+            dismissAddEvent(speech: true)
         }
     }
 }
