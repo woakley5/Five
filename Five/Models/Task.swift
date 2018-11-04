@@ -39,7 +39,7 @@ class Task: NSObject {
         
         self.text = text
         self.createDate = Date()
-        self.status = TaskStatus.backlog
+        self.status = .backlog
         self.tag = tag
     }
     
@@ -50,7 +50,7 @@ class Task: NSObject {
     
     func completeTask() {
         NotificationCenter.default.post(name: .taskCompleted, object: self)
-        switchStatus(status: TaskStatus.completed)
+        switchStatus(status: .completed)
     }
     
     func switchStatus(status: TaskStatus) {
@@ -58,6 +58,6 @@ class Task: NSObject {
     }
     
     func isOverdue() -> Bool {
-        return status != TaskStatus.completed && dueDate != nil && dueDate! < Date()
+        return status != .completed && dueDate != nil && dueDate! < Date()
     }
 }
