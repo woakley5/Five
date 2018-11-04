@@ -40,7 +40,10 @@ class MainViewController: UIViewController {
     var backlogExpanded = false
     
     //COMPLETED INSTANCE VARIABLES
-
+    var completedCards: [CompletedCellView] = []
+    var completedExpanded = false
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         TaskList.addSampleTasks()
@@ -125,7 +128,9 @@ class MainViewController: UIViewController {
                 self.setCurrentState(toState)
             }
         } else if fromState == STATES.completed {
-            setCurrentState(toState)
+            dismissCompleted {
+                self.setCurrentState(toState)
+            }
         }
     }
     
@@ -138,6 +143,7 @@ class MainViewController: UIViewController {
             initFeedCells()
             animateLabel(withText: "my five")
         } else if currentState == STATES.completed {
+            initCompletedCells()
             animateLabel(withText: "completed")
         }
     }
