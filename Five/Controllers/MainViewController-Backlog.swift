@@ -61,7 +61,9 @@ extension MainViewController {
     
     func contractBacklog() {
         backlogExpanded = false
+        backlogAddEventShowing = false
         for (i, card) in backlogCards.enumerated() {
+            card.isUserInteractionEnabled = true
             card.contract()
             let width = Int(view.frame.width - 40)
             UIView.animate(withDuration: 0.5) {
@@ -69,6 +71,58 @@ extension MainViewController {
             }
         }
     }
+    
+    func backlogShowAddEvent() {
+        backlogAddEventShowing = true
+        for i in (0..<backlogCards.count) {
+            let yVal = (20 * i) + 400
+            let width = Int(self.view.frame.width - 40)
+            let frame = CGRect(x: 20, y: yVal, width: width, height: 80)
+            let deadlineTime = DispatchTime.now()
+            backlogCards[i].isUserInteractionEnabled = false
+            DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+                self.backlogCards[i].animate(toFrame: frame) {
+                    print("Done animating expand")
+                }
+            }
+        }
+        addButton.setImage(UIImage(named:"cancelIcon"), for: .normal)
+        addEventCell = AddEventCellView(frame: CGRect(x: 20, y: 100, width: view.frame.width - 40, height: view.frame.width - 100), controller: self)
+        view.addSubview(addEventCell)
+        addEventCell.animate()
+        addEventCell.doneButton.addTarget(self, action: #selector(backlogSaveEvent), for: .touchUpInside)
+    }
+    
+    @objc func backlogSaveEvent() {
+        if let text = addEventCell.nameField.text {
+            // TODO: ALSO NEED TO GET THE TAG. TAG SHOULD BE REQUIRED. PARSE FOR TAG AND RETURN ERROR IF INCORRECT
+            // TODO: CHECK FOR DATE HERE
+            // if let dueDate = <date> {
+            //   // code
+            // else {
+            TaskList.createTask(text: text, tag: .work)
+            for card in backlogCards {
+                card.reload()
+            }
+            
+            dismissBacklogAddView()
+        } else {
+            print("Missing field")
+        }
+    }
+    
+    func dismissBacklogAddView() {
+        addButton.setImage(UIImage(named:"addIcon"), for: .normal)
+        UIView.animate(withDuration: 0.5, animations: {
+            self.addEventCell.frame = CGRect(x: 500, y: 100, width: self.view.frame.width - 40, height: self.view.frame.width - 100)
+        }) { (done) in
+            self.backlogAddEventShowing = false
+            self.addEventCell.removeFromSuperview()
+            self.contractBacklog()
+        }
+    }
+    
+    
     
     func expandAndShowBacklogCell(cellIndex: Int) {
         backlogExpanded = true
@@ -95,6 +149,9 @@ extension MainViewController {
     }
     
     func dismissBacklog(completion: @escaping () -> Void) {
+        if backlogAddEventShowing {
+            dismissBacklogAddView()
+        }
         dismissBacklogCells {
             completion()
         }

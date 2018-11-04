@@ -40,6 +40,7 @@ class MainViewController: UIViewController {
     //BACKLOG INSTANCE VARIABLES
     var backlogCards: [BacklogCellView] = []
     var backlogExpanded = false
+    var backlogAddEventShowing = false
     
     //COMPLETED INSTANCE VARIABLES
     var completedCards: [CompletedCellView] = []
@@ -177,6 +178,12 @@ class MainViewController: UIViewController {
             showAddEvent()
         } else if feedExpanded {
             dismissAddEvent()
+        }
+        
+        if currentState == .backlog && !backlogAddEventShowing {
+            backlogShowAddEvent()
+        } else {
+            contractBacklog()
         }
     }
 }
