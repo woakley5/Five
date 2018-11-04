@@ -72,10 +72,11 @@ extension MainViewController {
         }
     }
     
-    func backlogShowAddEvent() {
+    func backlogShowAddEvent(speech: Bool) {
         if backlogExpanded {
             contractBacklog()
         }
+        
         backlogAddEventShowing = true
         for i in (0..<backlogCards.count) {
             let yVal = (20 * i) + 400
@@ -89,11 +90,33 @@ extension MainViewController {
                 }
             }
         }
-        addButton.setImage(UIImage(named:"cancelIcon"), for: .normal)
-        addEventCell = AddEventCellView(frame: CGRect(x: 20, y: 100, width: view.frame.width - 40, height: view.frame.width - 100), controller: self)
-        view.addSubview(addEventCell)
-        addEventCell.animate()
-        addEventCell.doneButton.addTarget(self, action: #selector(backlogSaveEvent), for: .touchUpInside)
+        if speech {
+            addSpeechButton.setImage(UIImage(named:"cancelIcon"), for: .normal)
+            addSpeechEventCell = AddSpeechEventCellView(frame: CGRect(x: 20, y: 100, width: view.frame.width - 40, height: view.frame.width - 100), controller: self)
+            view.addSubview(addSpeechEventCell)
+            addSpeechEventCell.doneButton.addTarget(self, action: #selector(saveSpeechEventBacklog), for: .touchUpInside)
+            addSpeechEventCell.animate()
+        } else {
+            addButton.setImage(UIImage(named:"cancelIcon"), for: .normal)
+            addEventCell = AddEventCellView(frame: CGRect(x: 20, y: 100, width: view.frame.width - 40, height: view.frame.width - 100), controller: self)
+            view.addSubview(addEventCell)
+            addEventCell.animate()
+            addEventCell.doneButton.addTarget(self, action: #selector(backlogSaveEvent), for: .touchUpInside)
+        }
+        
+    }
+    
+    @objc func saveSpeechEventBacklog() {
+        //TODO: get data from addEventCell and save to Task and TaskList
+        if let text = addSpeechEventCell.textView.text {
+            parseSpeech(data: text)
+            dismissBacklogAddView(speech: true)
+            for card in backlogCards {
+                card.reload()
+            }
+        } else {
+            print("Missing field")
+        }
     }
     
     @objc func backlogSaveEvent() {
@@ -113,22 +136,34 @@ extension MainViewController {
             for card in backlogCards {
                 card.reload()
             }
-            dismissBacklogAddView()
+            dismissBacklogAddView(speech: false)
 
         } else {
             print("Missing field")
         }
     }
     
-    func dismissBacklogAddView() {
-        addButton.setImage(UIImage(named:"addIcon"), for: .normal)
-        UIView.animate(withDuration: 0.5, animations: {
-            self.addEventCell.frame = CGRect(x: 500, y: 100, width: self.view.frame.width - 40, height: self.view.frame.width - 100)
-        }) { (done) in
-            self.backlogAddEventShowing = false
-            self.addEventCell.removeFromSuperview()
-            self.contractBacklog()
+    func dismissBacklogAddView(speech: Bool) {
+        if speech {
+            addSpeechButton.setImage(UIImage(named:"microphone"), for: .normal)
+            UIView.animate(withDuration: 0.5, animations: {
+                self.addSpeechEventCell.frame = CGRect(x: 500, y: 100, width: self.view.frame.width - 40, height: self.view.frame.width - 100)
+            }) { (done) in
+                self.backlogAddEventShowing = false
+                self.addSpeechEventCell.removeFromSuperview()
+                self.contractBacklog()
+            }
+        } else {
+            addButton.setImage(UIImage(named:"addIcon"), for: .normal)
+            UIView.animate(withDuration: 0.5, animations: {
+                self.addEventCell.frame = CGRect(x: 500, y: 100, width: self.view.frame.width - 40, height: self.view.frame.width - 100)
+            }) { (done) in
+                self.backlogAddEventShowing = false
+                self.addEventCell.removeFromSuperview()
+                self.contractBacklog()
+            }
         }
+        
     }
     
     func expandAndShowBacklogCell(cellIndex: Int) {
@@ -157,7 +192,7 @@ extension MainViewController {
     
     func dismissBacklog(completion: @escaping () -> Void) {
         if backlogAddEventShowing {
-            dismissBacklogAddView()
+            dismissBacklogAddView(speech: false)
         }
         dismissBacklogCells {
             completion()

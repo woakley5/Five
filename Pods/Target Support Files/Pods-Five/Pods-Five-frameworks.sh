@@ -149,8 +149,17 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/DatePicker/DatePicker.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Extended/Extended.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GradientView/GradientView.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PINCache/PINCache.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PINOperation/PINOperation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SkyFloatingLabelTextField/SkyFloatingLabelTextField.framework"
+  install_framework "${PODS_ROOT}/SnapSDK/SCSDKBitmojiKit.framework"
+  install_framework "${PODS_ROOT}/SnapSDK/SCSDKCoreKit.framework"
+  install_framework "${PODS_ROOT}/SnapSDK/SCSDKCreativeKit.framework"
+  install_framework "${PODS_ROOT}/SnapSDK/SCSDKCoreKit.framework"
+  install_framework "${PODS_ROOT}/SnapSDK/SCSDKLoginKit.framework"
+  install_framework "${PODS_ROOT}/SnapSDK/SCSDKCoreKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIColor_Hex_Swift/UIColor_Hex_Swift.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/YYImage/YYImage.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
@@ -159,8 +168,17 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/DatePicker/DatePicker.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Extended/Extended.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GradientView/GradientView.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PINCache/PINCache.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/PINOperation/PINOperation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SkyFloatingLabelTextField/SkyFloatingLabelTextField.framework"
+  install_framework "${PODS_ROOT}/SnapSDK/SCSDKBitmojiKit.framework"
+  install_framework "${PODS_ROOT}/SnapSDK/SCSDKCoreKit.framework"
+  install_framework "${PODS_ROOT}/SnapSDK/SCSDKCreativeKit.framework"
+  install_framework "${PODS_ROOT}/SnapSDK/SCSDKCoreKit.framework"
+  install_framework "${PODS_ROOT}/SnapSDK/SCSDKLoginKit.framework"
+  install_framework "${PODS_ROOT}/SnapSDK/SCSDKCoreKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIColor_Hex_Swift/UIColor_Hex_Swift.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/YYImage/YYImage.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

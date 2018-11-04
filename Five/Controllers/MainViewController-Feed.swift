@@ -152,7 +152,7 @@ extension MainViewController {
         }
     }
     
-    private func parseSpeech(data: String) {
+    func parseSpeech(data: String) {
         var components = data.components(separatedBy: " ")
         var tag: TaskTag = .personal
         var offset = 0
@@ -198,11 +198,12 @@ extension MainViewController {
         }
 
     }
+    
     @objc func saveSpeechEvent() {
         //TODO: get data from addEventCell and save to Task and TaskList
         if let text = addSpeechEventCell.textView.text {
             parseSpeech(data: text)
-            if feedCards.count < 5 {
+            if feedCards.count < 5  {
                 let list = TaskList.getTasksByStatus(status: .active)
                 createFeedCell(task: list[list.count - 1], addToSubview: true)
             }
@@ -237,7 +238,7 @@ extension MainViewController {
     
     func dismissAddEvent(speech: Bool = false) {
         if speech {
-            addSpeechButton.setImage(UIImage(named:"addIcon"), for: .normal)
+            addSpeechButton.setImage(UIImage(named:"microphone"), for: .normal)
             UIView.animate(withDuration: 0.5, animations: {
                 self.addSpeechEventCell.frame = CGRect(x: 500, y: 100, width: self.view.frame.width - 40, height: self.view.frame.width - 100)
             }) { (done) in
