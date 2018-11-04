@@ -117,6 +117,7 @@ class MainViewController: UIViewController {
     func switchStateTo(_ state: STATES) {
         currentState = state
         if state == .backlog {
+            dismissAddEvent()
             hideFeedCells() {
                 print("Showing backlog")
                 self.initBacklogCells()
@@ -128,6 +129,7 @@ class MainViewController: UIViewController {
             animateLabel(withText: "my five")
             
         } else if state == .completed {
+            dismissAddEvent()
             hideFeedCells() {
                 print("hid feed cells")
             }
