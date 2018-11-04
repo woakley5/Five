@@ -41,6 +41,9 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        TaskList.addSampleTasks()
+        AchievementList.setAchievements()
+        
         mainCardFrame = CGRect(x: 20, y: 100, width: view.frame.width - 40, height: view.frame.width - 80)
         initCommonUI()
     }
