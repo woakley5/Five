@@ -87,8 +87,6 @@ class CompletedCellView: SpringView {
         financeTasks = TaskList.getCompletedTasksByTag(tag: .finance)
         personalTasks = TaskList.getCompletedTasksByTag(tag: .personal)
         
-        print(homeTasks)
-        
         if taskTag == .work {
             list = workTasks
         } else if taskTag == .finance {
