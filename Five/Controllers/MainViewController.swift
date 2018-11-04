@@ -9,6 +9,7 @@
 import UIKit
 import UIColor_Hex_Swift
 import GradientView
+import BRYXBanner
 import SCSDKLoginKit
 import SCSDKBitmojiKit
 import SCSDKCreativeKit
@@ -163,6 +164,11 @@ class MainViewController: UIViewController {
                 self.setCurrentState(toState)
             }
         }
+    }
+    
+    func sendNotification(title: String, subtitle: String) {
+        let banner = Banner(title: title, subtitle: subtitle, image: nil, backgroundColor: .red, didTapBlock: nil)
+        banner.show()
     }
     
     func setCurrentState(_ toState: STATES) {
