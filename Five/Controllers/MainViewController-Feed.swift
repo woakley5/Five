@@ -49,12 +49,16 @@ extension MainViewController {
     
     func createFeedCell(task: Task, addToSubview: Bool) {
         let i = feedCards.count
-        let gradients: [GRADIENT] = [BLUE_GRADIENT(), PINK_GRADIENT()]
+        let gradients: [GRADIENT] = [PERSONAL_BLUE_GRADIENT(), WORK_ORANGE_GRADIENT(), FINANCE_GREEN_GRADIENT(), HOME_RED_GRADIENT()]
         let gradient: GRADIENT
-        if i % 2 == 0 {
+        if task.tag == .personal {
             gradient = gradients[0]
-        } else {
+        } else if task.tag == .work {
             gradient = gradients[1]
+        } else if task.tag == .finance {
+            gradient = gradients[2]
+        } else {
+            gradient = gradients[3]
         }
         let yVal = (100 * i) + 100
         let width = Int(self.view.frame.width - 40)
@@ -83,14 +87,14 @@ extension MainViewController {
 
     func dismissFeedCells(completion: @escaping () -> Void) {
         feedExpanded = false
-        let width = Int(self.view.frame.width - 40)
-        let awayFrame = CGRect(x: 20, y: 1000, width: width, height: 80)
         for card in feedCards {
             let deadlineTime = DispatchTime.now()
             DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-                card.animate(toFrame: awayFrame) {
+                UIView.animate(withDuration: 0.3, animations: {
+                    card.alpha = 0
+                }, completion: { (done) in
                     card.removeFromSuperview()
-                }
+                })
             }
         }
         feedCards.removeAll()
@@ -121,13 +125,12 @@ extension MainViewController {
     func resetAllFeedCardsAnimation() {
         feedExpanded = false
         for (i, card) in feedCards.enumerated() {
-            print("the value of i is \(i)")
             card.completeButton.isUserInteractionEnabled = true
             let yVal = (100 * i) + 100
             let width = Int(self.view.frame.width - 40)
             let frame = CGRect(x: 20, y: yVal, width: width, height: 80)
             card.animate(toFrame: frame) {
-                print("Done animating reset")
+//                print("Done animating reset")
             }
         }
     }
@@ -149,7 +152,6 @@ extension MainViewController {
     }
     
     private func parseSpeech(data: String) {
-        print("APPEKRPEJRIEJRIOEJR")
         var components = data.components(separatedBy: " ")
         var tag: TaskTag = .personal
         var offset = 0
@@ -163,6 +165,7 @@ extension MainViewController {
                 case "work":
                     tag = .work
                 case "personal":
+                    print("in personal")
                     tag = .personal
                 case "finance":
                     tag = .finance
@@ -175,11 +178,9 @@ extension MainViewController {
             }
     
         }
-        print("dbkhsahbdjhsabdhjasbdjhasbdjhasbhjsda")
         TaskList.createTask(text: String(data.prefix(data.count - offset)), tag: tag)
     }
     @objc func saveSpeechEvent() {
-        print("hdsajdkashdskd")
         //TODO: get data from addEventCell and save to Task and TaskList
         if let text = addSpeechEventCell.textView.text {
             parseSpeech(data: text)
@@ -194,14 +195,17 @@ extension MainViewController {
     }
     
     @objc func saveEvent() {
-        print("save event")
         if let text = addEventCell.nameField.text {
             // TODO: ALSO NEED TO GET THE TAG. TAG SHOULD BE REQUIRED. PARSE FOR TAG AND RETURN ERROR IF INCORRECT
             // TODO: CHECK FOR DATE HERE
             // if let dueDate = <date> {
             //   // code
             // else {
-            TaskList.createTask(text: text, tag: .work)
+            if let dueDate = addEventCell.chosenDate {
+                TaskList.createTask(text: text, tag: addEventCell.groups.selected, dueDate: dueDate)
+            } else {
+                TaskList.createTask(text: text, tag: addEventCell.groups.selected)
+            }
             if feedCards.count < 5 {
                 let list = TaskList.getTasksByStatus(status: .active)
                 createFeedCell(task: list[list.count - 1], addToSubview: true)
@@ -252,8 +256,6 @@ extension MainViewController {
     }
     
     func advanceFeed(removedIndex: Int) {
-        print("Removed event " + String(removedIndex))
-        
         for x in removedIndex..<feedCards.count {
             let cardFrame = self.feedCards[x].frame
             UIView.animate(withDuration: 0.5) {

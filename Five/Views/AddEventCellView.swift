@@ -20,6 +20,7 @@ class AddEventCellView: SpringView {
     var groups: SelectGroupContainerView!
     var calendarIcon: UIButton!
     var dateLabel: UILabel!
+    var chosenDate: Date?
     
     var viewController: UIViewController!
 
@@ -88,14 +89,13 @@ class AddEventCellView: SpringView {
     
     @objc func openDatePicker(_ sender: UIButton) {
         //self.label.alpha = 1
-        print("HERERERERERERE")
         let datePicker = DatePicker()
         datePicker.vc.view.layer.zPosition = 5000
         datePicker.vc.view.alpha = 0.9
         datePicker.colors(main: .black, background: .white, inactive: UIColor("#392C79"))
         datePicker.setup() { (selected, date) in
             if selected, let selectedDate = date {
-                //print("\(selectedDate)")
+                self.chosenDate = selectedDate
                 self.dateLabel.text = "\(selectedDate.month())/\(selectedDate.day())/\(selectedDate.year())"
             } else {
                 self.dateLabel.text = "11/11/2018"

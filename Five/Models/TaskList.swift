@@ -54,6 +54,7 @@ class TaskList: NSObject {
             task.status = .active
         }
         taskList.append(task)
+        NotificationCenter.default.post(name: .taskAdded, object: nil)
     }
     
     static func getTasksByStatus(status: TaskStatus) -> [Task] {
@@ -79,7 +80,7 @@ class TaskList: NSObject {
     }
     
     static func getNumTasksCompleted() -> Int {
-        return taskList.count
+        return taskList.filter { $0.status == .completed }.count
     }
     
     static func getNextActive() -> Task? {

@@ -19,6 +19,8 @@ class SelectGroupContainerView: UIView, GroupButtonProtocol {
     var work: SelectGroupButtonView!
     var finance: SelectGroupButtonView!
     
+    var selected: TaskTag!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -26,15 +28,18 @@ class SelectGroupContainerView: UIView, GroupButtonProtocol {
     }
     
     func createGroups() {
-        personal = SelectGroupButtonView(frame: CGRect(x: 10, y: 20, width: 130, height: 40), color: UIColor.red, group: "Personal", buttonTag: .personal)
-        work = SelectGroupButtonView(frame: CGRect(x: personal.frame.maxX + 20, y: personal.frame.minY, width: 130, height: 40), color: UIColor.yellow, group: "Work", buttonTag: .work)
-        finance = SelectGroupButtonView(frame: CGRect(x: personal.frame.minX, y: personal.frame.maxY + 20, width: 130, height: 40), color: UIColor.green, group: "Finance", buttonTag: .finance)
-        home = SelectGroupButtonView(frame: CGRect(x: work.frame.minX, y: finance.frame.minY, width: 130, height: 40), color: UIColor.green, group: "Home", buttonTag: .home)
+        personal = SelectGroupButtonView(frame: CGRect(x: 10, y: 20, width: 130, height: 40), color: Constants.personalBlue, group: "Personal", buttonTag: .personal)
+        work = SelectGroupButtonView(frame: CGRect(x: personal.frame.maxX + 20, y: personal.frame.minY, width: 130, height: 40), color: Constants.workOrange, group: "Work", buttonTag: .work)
+        finance = SelectGroupButtonView(frame: CGRect(x: personal.frame.minX, y: personal.frame.maxY + 20, width: 130, height: 40), color: Constants.financeGreen, group: "Finance", buttonTag: .finance)
+        home = SelectGroupButtonView(frame: CGRect(x: work.frame.minX, y: finance.frame.minY, width: 130, height: 40), color: Constants.homeRed, group: "Home", buttonTag: .home)
         
         personal.delegate = self
         work.delegate = self
         finance.delegate = self
         home.delegate = self
+        
+        selected = .personal
+        personal.selectMe()
         
         addSubview(personal)
         addSubview(work)
@@ -49,26 +54,23 @@ class SelectGroupContainerView: UIView, GroupButtonProtocol {
 
 extension SelectGroupContainerView {
     func select(buttonTag: TaskTag) {
+        selected = buttonTag
         if buttonTag == .finance {
-            print("finance")
             finance.selectMe()
             work.unselectMe()
             home.unselectMe()
             personal.unselectMe()
         } else if buttonTag == .work {
-            print("work")
             finance.unselectMe()
             work.selectMe()
             home.unselectMe()
             personal.unselectMe()
         } else if buttonTag == .home {
-            print("home")
             finance.unselectMe()
             work.unselectMe()
             home.selectMe()
             personal.unselectMe()
         } else if buttonTag == .personal {
-            print("personal")
             finance.unselectMe()
             work.unselectMe()
             home.unselectMe()

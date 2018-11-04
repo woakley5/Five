@@ -12,13 +12,13 @@ import UIKit
 extension MainViewController {
     
     func initCompletedCells() {
-        let CompletedColors = [UIColor("#EA7F6B"), UIColor("#5CCAE5"), UIColor("#10CF98"), UIColor("#5A4FB1")]
+        let CompletedColors = [Constants.workOrange, Constants.personalBlue, Constants.financeGreen, Constants.homeRed]
         let CompletedTitles = ["Work", "Personal", "Finance", "Home"]
         
         let tags: [TaskTag] = [.personal, .work, .finance, .home]
         for i in 0..<4 {
             let width = Int(view.frame.width - 40)
-            let cell = CompletedCellView(frame: CGRect(x: 20, y: 100 + (100 * i), width: width, height: 60), color: CompletedColors[i], tag: tags[i])
+            let cell = CompletedCellView(frame: CGRect(x: 20, y: 100 + (100 * i), width: width, height: 60), color: CompletedColors[i]!, tag: tags[i])
             cell.headerLabel.text = CompletedTitles[i]
             cell.header.tag = i + 50
             let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappedCompletedCell(sender:)))
@@ -41,7 +41,7 @@ extension MainViewController {
         }
         for card in completedCards {
             UIView.animate(withDuration: 0.5, animations: {
-                card.frame = CGRect(x: card.frame.minX, y: card.frame.maxY + 900, width: card.frame.width, height: card.frame.height)
+                card.frame = CGRect(x: card.frame.minX + 600, y: card.frame.maxY, width: card.frame.width, height: card.frame.height)
             }) { (done) in
                 card.removeFromSuperview()
                 self.completedCards.removeFirst()
