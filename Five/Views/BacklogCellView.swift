@@ -17,13 +17,21 @@ class BacklogCellView: SpringView {
     var headerColor: UIColor!
     var taskTableView: UITableView!
     
-    var tasks: [Task] = []
+    var taskTag: TaskTag!
+    var list: [Task]!
     
+    var personalTasks: [Task] = []
+    var workTasks: [Task] = []
+    var financeTasks: [Task] = []
+    var homeTasks: [Task] = []
+    
+
     var expanded = false
 
-    init(frame: CGRect, color: UIColor) {
+    init(frame: CGRect, color: UIColor, tag: TaskTag) {
         super.init(frame: frame)
         self.headerColor = color
+        self.taskTag = tag
         animation = "slideUp"
         initUI()
         initLayer()
@@ -67,7 +75,23 @@ class BacklogCellView: SpringView {
         taskTableView.backgroundColor = .clear
         background.contentView.addSubview(taskTableView)
 
-        tasks = TaskList.getTasksByStatus(status: .backlog)
+        workTasks = TaskList.getBacklogTasksByTag(tag: .work)
+        homeTasks = TaskList.getBacklogTasksByTag(tag: .home)
+        financeTasks = TaskList.getBacklogTasksByTag(tag: .finance)
+        personalTasks = TaskList.getBacklogTasksByTag(tag: .personal)
+        
+        print(homeTasks)
+        
+        if taskTag == .work {
+            list = workTasks
+        } else if taskTag == .finance {
+            list = financeTasks
+        } else if taskTag == .home {
+            list = homeTasks
+        } else {
+            list = personalTasks
+        }
+        
         taskTableView.reloadData()
         //expand()
     }
@@ -100,13 +124,14 @@ class BacklogCellView: SpringView {
 extension BacklogCellView: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tasks.count
+        return list.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = UITableViewCell.init(style: .default, reuseIdentifier: "reuse")
         cell.awakeFromNib()
-        cell.textLabel?.text = tasks[indexPath.row].text
+        cell.textLabel?.text = list[indexPath.row].text
         cell.textLabel?.textColor = .white
         cell.textLabel?.font = UIFont(name: "Quicksand-Regular", size: 16)
         cell.backgroundColor = .clear

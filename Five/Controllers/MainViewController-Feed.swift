@@ -98,13 +98,13 @@ extension MainViewController {
     }
     
     func expandAndShowAddAnimation() {
-        
         feedExpanded = true
         for i in (0..<feedCards.count) {
             let yVal = (20 * i) + 400
             let width = Int(self.view.frame.width - 40)
             let frame = CGRect(x: 20, y: yVal, width: width, height: 80)
             let deadlineTime = DispatchTime.now()
+            feedCards[i].completeButton.isUserInteractionEnabled = false
             DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
                 self.feedCards[i].animate(toFrame: frame) {
                     print("Done animating expand")
@@ -118,6 +118,7 @@ extension MainViewController {
         feedExpanded = false
         for (i, card) in feedCards.enumerated() {
             print("the value of i is \(i)")
+            card.completeButton.isUserInteractionEnabled = true
             let yVal = (100 * i) + 100
             let width = Int(self.view.frame.width - 40)
             let frame = CGRect(x: 20, y: yVal, width: width, height: 80)
