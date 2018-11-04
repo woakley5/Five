@@ -1,24 +1,28 @@
 PODS:
   - BRYXBanner (0.8.3)
   - GradientView (2.3.3)
+  - SkyFloatingLabelTextField (3.6.0)
   - UIColor_Hex_Swift (4.2.0)
 
 DEPENDENCIES:
   - BRYXBanner
   - GradientView
+  - SkyFloatingLabelTextField
   - UIColor_Hex_Swift (~> 4.2.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - BRYXBanner
     - GradientView
+    - SkyFloatingLabelTextField
     - UIColor_Hex_Swift
 
 SPEC CHECKSUMS:
   BRYXBanner: 8cf1b119792e1cee8d7ba107297ef89f7409bc53
   GradientView: b044fa46c24062ee245a07a4e8bea4c5c4d63de0
+  SkyFloatingLabelTextField: 38164979b79512f9ff9288ad8acfc4bbf5d843e3
   UIColor_Hex_Swift: bc07fc197421ee896b9ed6dcfa2054b7fbf75145
 
-PODFILE CHECKSUM: 72e5c38840f5c777e7fedf8c441b92451288f141
+PODFILE CHECKSUM: 2cfeca1fce7928afbfe7f5908d9c5c36de51ca14
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.5.2

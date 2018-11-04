@@ -13,7 +13,8 @@ extension MainViewController {
 
     func initFeedCells() {
         let gradients: [GRADIENT] = [BLUE_GRADIENT(), PINK_GRADIENT()]
-        for i in 0..<5 {
+        let tasks = TaskList.getTasksByStatus(status: TaskStatus.active)
+        for i in 0..<tasks.count {
             let gradient: GRADIENT
             if i % 2 == 0 {
                 gradient = gradients[0]
@@ -22,12 +23,14 @@ extension MainViewController {
             }
             let yVal = (100 * i) + 100
             let width = Int(self.view.frame.width - 40)
-            let card = TaskCellView(frame: CGRect(x: 20, y: yVal, width: width, height: 80), gradient: gradient)
+            let card = TaskCellView(frame: CGRect(x: 20, y: yVal, width: width, height: 80), gradient: gradient, task: tasks[i])
             feedCards.append(card)
             //let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappedFeedCell(sender:)))
             //card.addGestureRecognizer(tapGestureRecognizer)
             card.animation = "slideUp"
             card.duration = 1.0
+            card.completeButton.addTarget(self, action: #selector(markTaskAsDone(sender:)), for: .touchUpInside)
+            card.completeButton.tag = i
             card.tag = i
         }
         
@@ -79,7 +82,6 @@ extension MainViewController {
     func expandAndShowAddAnimation() {
         feedExpanded = true
         for i in (0..<5) {
-
             let yVal = (20 * i) + 400
             let width = Int(self.view.frame.width - 40)
             let frame = CGRect(x: 20, y: yVal, width: width, height: 80)
@@ -106,13 +108,49 @@ extension MainViewController {
     }
     
     func showAddEvent() {
-        addEventCell = AddEventCellView(frame: CGRect(x: 20, y: 60, width: view.frame.width - 40, height: view.frame.width - 40))
-        addEventCell.backgroundColor = .blue
+        addButton.setImage(UIImage(named:"cancelIcon"), for: .normal)
+        addEventCell = AddEventCellView(frame: CGRect(x: 20, y: 100, width: view.frame.width - 40, height: view.frame.width - 100))
         view.addSubview(addEventCell)
+        addEventCell.doneButton.addTarget(self, action: #selector(saveEvent), for: .touchUpInside)
         expandAndShowAddAnimation()
     }
     
-
+    @objc func saveEvent() {
+        //TODO: get data from addEventCell and save to Task and TaskList
+        dismissAddEvent()
+    }
+    
+    func dismissAddEvent() {
+        addButton.setImage(UIImage(named:"addIcon"), for: .normal)
+        UIView.animate(withDuration: 0.5, animations: {
+            self.addEventCell.frame = CGRect(x: 500, y: 100, width: self.view.frame.width - 40, height: self.view.frame.width - 100)
+        }) { (done) in
+            self.feedExpanded = false
+            self.addEventCell.removeFromSuperview()
+            self.resetAllFeedCardsAnimation()
+        }
+    }
+    
+    @objc func markTaskAsDone(sender: UIButton) {
+        let card = feedCards[sender.tag]
+        card.task.completeTask()
+        UIView.animate(withDuration: 0.25, animations: {
+            card.frame = CGRect(x: card.frame.maxX + 500, y: card.frame.minY, width: card.frame.width, height: card.frame.height)
+        }) { (done) in
+            card.removeFromSuperview()
+            self.advanceFeed(removedIndex: sender.tag)
+        }
+    }
+    
+    func advanceFeed(removedIndex: Int) {
+        print("Removed event " + String(removedIndex))
+        let tasks = TaskList.getTasksByStatus(status: TaskStatus.active)
+        for x in removedIndex..<feedCards.count {
+            UIView.animate(withDuration: 0.5) {
+                feedCards[x]
+            }
+        }
+    }
     
     @objc func tappedFeedCell(sender: UITapGestureRecognizer) {
         let view = sender.view as! TaskCellView
