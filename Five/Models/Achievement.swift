@@ -37,19 +37,22 @@ class Achievement: NSObject {
         var didComplete = false
         switch action {
         case .create?:
-            didComplete = TaskList.taskList.count > count
+            print("created: \(TaskList.taskList.count), count: \(count)")
+            didComplete = TaskList.taskList.count >= count
             break
         case .complete?:
-            didComplete = TaskList.getNumTasksCompleted() > count
+            print("Number of tasks completed: \(TaskList.getNumTasksCompleted()), count: \(count)")
+            didComplete = TaskList.getNumTasksCompleted() >= count
             break
         case .daily?:
             // This does NOT work. Buggy implementation created for hackathon purposes
             // TODO: fix me so it works by looking at days
-            didComplete = TaskList.getCompletedToday() > count
+            didComplete = TaskList.getCompletedToday() >= count
         default:
             return false
         }
         completed = didComplete
+        print("Completed? \(completed)\n")
         return didComplete
     }
 }

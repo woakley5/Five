@@ -32,8 +32,6 @@ class Task: NSObject {
     var tag: TaskTag!
     
     init(text: String, tag: TaskTag) {
-        NotificationCenter.default.post(name: .taskAdded, object: nil)
-        
         self.id = Task.currentId
         Task.currentId += 1
         
@@ -49,8 +47,8 @@ class Task: NSObject {
     }
     
     func completeTask() {
-        NotificationCenter.default.post(name: .taskCompleted, object: self)
         switchStatus(status: .completed)
+        NotificationCenter.default.post(name: .taskCompleted, object: self)
     }
     
     func switchStatus(status: TaskStatus) {
