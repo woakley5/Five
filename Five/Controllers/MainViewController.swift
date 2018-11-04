@@ -49,6 +49,7 @@ class MainViewController: UIViewController {
     var completedCards: [CompletedCellView] = []
     var completedExpanded = false
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let user = User()

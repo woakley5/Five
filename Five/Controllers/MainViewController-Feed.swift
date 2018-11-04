@@ -155,9 +155,13 @@ extension MainViewController {
         var components = data.components(separatedBy: " ")
         var tag: TaskTag = .personal
         var offset = 0
-        if components.count >= 2 {
-            var penultimateWord = components[components.count - 2].lowercased()
-            var ultimateWord = components[components.count - 1].lowercased()
+        if components.count >= 3 {
+            let firstWord = components[0].lowercased()
+            if firstWord == "add" {
+                components = [String](components[1..<components.count])
+            }
+            let penultimateWord = components[components.count - 2].lowercased()
+            let ultimateWord = components[components.count - 1].lowercased()
             offset += penultimateWord.length + ultimateWord.length + 2
             print(ultimateWord)
             if penultimateWord == "to" {
@@ -176,7 +180,6 @@ extension MainViewController {
                 
                 }
             }
-    
         }
         TaskList.createTask(text: String(data.prefix(data.count - offset)), tag: tag)
     }
