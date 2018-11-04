@@ -23,13 +23,14 @@ class MainViewController: UIViewController {
     //MAIN UI InstanceVariables
     var titleLabel: LTMorphingLabel!
     var addButton: UIButton!
-    var backgroundGradientView: UIView! //GradientView!
+    var backgroundGradientView: UIImageView! //GradientView!
     var backgroundGradient: GRADIENT!
     var mainCardFrame: CGRect!
     var backlogButton: UIButton!
     var feedButton: UIButton!
     var completedButton: UIButton!
     var user: User!
+    var underline: UIView!
     
     //FEED INSTANCE VARIABLES
     var addEventCell: AddEventCellView!
@@ -66,11 +67,12 @@ class MainViewController: UIViewController {
     
     func initCommonUI() {
         //backgroundGradient = BACKGROUND_GRADIENT()
-        backgroundGradientView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
+        backgroundGradientView = UIImageView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
         //backgroundGradientView.colors = backgroundGradient!.colors
         //backgroundGradientView.locations = backgroundGradient!.locations
         //backgroundGradientView.direction = backgroundGradient!.direction
-        backgroundGradientView.backgroundColor = UIColor("#242C49")
+        //backgroundGradientView.backgroundColor = UIColor("#242C49")
+        backgroundGradientView.image = UIImage(named:"background")
         view.addSubview(backgroundGradientView)
         titleLabel = LTMorphingLabel(frame: CGRect(x: 20, y: 10, width: 200, height: 90))
         titleLabel.textAlignment = .left
@@ -106,6 +108,10 @@ class MainViewController: UIViewController {
         completedButton.setImage(UIImage(named: "clipboardIcon"), for: .normal)
         completedButton.addTarget(self, action: #selector(tappedCompleted), for: .touchUpInside)
         view.addSubview(completedButton)
+        
+        underline = UIView(frame: CGRect(x: widthBase * 0.5 - 20, y: feedButton.frame.maxY + 5, width: dim, height: 2))
+        underline.backgroundColor = .white
+        view.addSubview(underline)
     }
     
     @objc func tappedBacklog() {
@@ -138,6 +144,7 @@ class MainViewController: UIViewController {
     }
     
     func setCurrentState(_ toState: STATES) {
+        animateUnderline(state: toState)
         currentState = toState
         if currentState == STATES.backlog {
             initBacklogCells()
@@ -148,6 +155,20 @@ class MainViewController: UIViewController {
         } else if currentState == STATES.completed {
             initCompletedCells()
             animateLabel(withText: "completed")
+        }
+    }
+    
+    func animateUnderline(state: STATES) {
+        var xVal: CGFloat!
+        if state == STATES.backlog {
+            xVal = view.frame.width * 0.25 - 20
+        } else if state == STATES.feed {
+            xVal = view.frame.width * 0.5 - 20
+        } else if state == STATES.completed {
+            xVal = view.frame.width * 0.75 - 20
+        }
+        UIView.animate(withDuration: 0.3) {
+            self.underline.frame = CGRect(x: xVal, y: self.feedButton.frame.maxY + 5, width: 50, height: 2)
         }
     }
     

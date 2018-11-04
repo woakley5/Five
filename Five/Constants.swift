@@ -33,15 +33,26 @@ struct BACKGROUND_GRADIENT: GRADIENT {
     var direction = GradientView.Direction.vertical
 }
 
-struct PINK_GRADIENT: GRADIENT {
-    var colors = [UIColor("#FDA0A7"), UIColor("#FB76A4")]
+struct WORK_ORANGE_GRADIENT: GRADIENT {
+    var colors = [UIColor("#F79F33"), UIColor("#F79F33")]
     var locations: [CGFloat] = [0.2, 0.8]
     var direction = GradientView.Direction.horizontal
 }
 
-struct BLUE_GRADIENT: GRADIENT {
-    var colors = [UIColor("#5CCAE5"), UIColor("#0CCEC2")]
+struct PERSONAL_BLUE_GRADIENT: GRADIENT {
+    var colors = [UIColor("#39B8B5"), UIColor("#39B8B5")]
     var locations: [CGFloat] = [0.2, 0.8]
     var direction = GradientView.Direction.horizontal
 }
 
+struct FINANCE_GREEN_GRADIENT: GRADIENT {
+    var colors = [UIColor("#A8E921"), UIColor("#A8E921")]
+    var locations: [CGFloat] = [0.2, 0.8]
+    var direction = GradientView.Direction.horizontal
+}
+
+struct HOME_RED_GRADIENT: GRADIENT {
+    var colors = [UIColor("#CB5D3E"), UIColor("#CB5D3E")]
+    var locations: [CGFloat] = [0.2, 0.8]
+    var direction = GradientView.Direction.horizontal
+}
