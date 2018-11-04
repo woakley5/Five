@@ -65,15 +65,23 @@ extension MainViewController {
         card.animation = "slideUp"
         card.duration = 1.0
         card.completeButton.addTarget(self, action: #selector(markTaskAsDone(sender:)), for: .touchUpInside)
+        
+        var zVal = backgroundGradientView.layer.zPosition + 5
+        for card in feedCards {
+            card.layer.zPosition = CGFloat(zVal)
+            zVal = zVal - 1
+        }
+        
         card.completeButton.tag = i
         card.tag = i
         
         if addToSubview {
             view.addSubview(card)
+            card.animate()
         }
     }
 
-    func hideFeedCells() {
+    func hideFeedCells(completion: @escaping () -> Void) {
         feedExpanded = false
         let width = Int(self.view.frame.width - 40)
         let awayFrame = CGRect(x: 20, y: 1000, width: width, height: 80)
@@ -86,6 +94,7 @@ extension MainViewController {
             }
         }
         feedCards.removeAll()
+        completion()
     }
     
     func expandAndShowAddAnimation() {
@@ -134,9 +143,15 @@ extension MainViewController {
             //   // code
             // else {
             TaskList.createTask(text: text, tag: .work)
-            // }
+            if feedCards.count < 5 {
+                let list = TaskList.getTasksByStatus(status: .active)
+                createFeedCell(task: list[list.count - 1], addToSubview: true)
+            }
+            
+            dismissAddEvent()
+        } else {
+            print("Missing field")
         }
-        dismissAddEvent()
     }
     
     func dismissAddEvent() {
