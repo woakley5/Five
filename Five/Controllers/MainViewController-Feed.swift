@@ -109,7 +109,7 @@ extension MainViewController {
     
     func showAddEvent() {
         addButton.setImage(UIImage(named:"cancelIcon"), for: .normal)
-        addEventCell = AddEventCellView(frame: CGRect(x: 20, y: 100, width: view.frame.width - 40, height: view.frame.width - 100))
+        addEventCell = AddEventCellView(frame: CGRect(x: 20, y: 100, width: view.frame.width - 40, height: view.frame.width - 100), controller: self)
         view.addSubview(addEventCell)
         addEventCell.doneButton.addTarget(self, action: #selector(saveEvent), for: .touchUpInside)
         expandAndShowAddAnimation()
@@ -147,7 +147,7 @@ extension MainViewController {
         let tasks = TaskList.getTasksByStatus(status: TaskStatus.active)
         for x in removedIndex..<feedCards.count {
             UIView.animate(withDuration: 0.5) {
-                feedCards[x]
+                self.feedCards[x]
             }
         }
     }

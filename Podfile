@@ -12,5 +12,6 @@ target 'Five' do
   pod 'UIColor_Hex_Swift', '~> 4.2.0'
   pod 'BRYXBanner'
   pod 'SkyFloatingLabelTextField'
+  pod 'DatePicker', '1.0.0'
   
 end
