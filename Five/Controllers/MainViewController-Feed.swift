@@ -12,26 +12,9 @@ import UIKit
 extension MainViewController {
 
     func initFeedCells() {
-        let gradients: [GRADIENT] = [BLUE_GRADIENT(), PINK_GRADIENT()]
         let tasks = TaskList.getTasksByStatus(status: TaskStatus.active)
         for i in 0..<tasks.count {
-            let gradient: GRADIENT
-            if i % 2 == 0 {
-                gradient = gradients[0]
-            } else {
-                gradient = gradients[1]
-            }
-            let yVal = (100 * i) + 100
-            let width = Int(self.view.frame.width - 40)
-            let card = TaskCellView(frame: CGRect(x: 20, y: yVal, width: width, height: 80), gradient: gradient, task: tasks[i])
-            feedCards.append(card)
-            //let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappedFeedCell(sender:)))
-            //card.addGestureRecognizer(tapGestureRecognizer)
-            card.animation = "slideUp"
-            card.duration = 1.0
-            card.completeButton.addTarget(self, action: #selector(markTaskAsDone(sender:)), for: .touchUpInside)
-            card.completeButton.tag = i
-            card.tag = i
+            createFeedCell(task: tasks[i])
         }
         
         var zVal = backgroundGradientView.layer.zPosition + 5
@@ -62,6 +45,28 @@ extension MainViewController {
                 card.animate()
             }
         }
+    }
+    
+    func createFeedCell(task: Task) {
+        let i = feedCards.count
+        let gradients: [GRADIENT] = [BLUE_GRADIENT(), PINK_GRADIENT()]
+        let gradient: GRADIENT
+        if i % 2 == 0 {
+            gradient = gradients[0]
+        } else {
+            gradient = gradients[1]
+        }
+        let yVal = (100 * i) + 100
+        let width = Int(self.view.frame.width - 40)
+        let card = TaskCellView(frame: CGRect(x: 20, y: yVal, width: width, height: 80), gradient: gradient, task: task)
+        feedCards.append(card)
+        //let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappedFeedCell(sender:)))
+        //card.addGestureRecognizer(tapGestureRecognizer)
+        card.animation = "slideUp"
+        card.duration = 1.0
+        card.completeButton.addTarget(self, action: #selector(markTaskAsDone(sender:)), for: .touchUpInside)
+        card.completeButton.tag = i
+        card.tag = i
     }
 
     func hideFeedCells() {
@@ -144,12 +149,16 @@ extension MainViewController {
     
     func advanceFeed(removedIndex: Int) {
         print("Removed event " + String(removedIndex))
-        let tasks = TaskList.getTasksByStatus(status: TaskStatus.active)
+        
         for x in removedIndex..<feedCards.count {
+            let cardFrame = self.feedCards[x].frame
             UIView.animate(withDuration: 0.5) {
-                feedCards[x]
+                self.feedCards[x].frame = CGRect(x: cardFrame.minX, y: cardFrame.minY - 100, width: cardFrame.width, height: cardFrame.height)
             }
         }
+        
+        if let newTask = TaskList.
+        createFeedCell(task: <#T##Task#>)
     }
     
     @objc func tappedFeedCell(sender: UITapGestureRecognizer) {
