@@ -98,8 +98,8 @@ class BacklogCellView: SpringView {
     
     func expand() {
         UIView.animate(withDuration: 0.5) {
-            self.frame = CGRect(x: self.frame.minX, y: self.frame.minY, width: self.frame.width, height: self.header.frame.height * 4)
-            self.background.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.header.frame.height * 4)
+            self.frame = CGRect(x: self.frame.minX, y: self.frame.minY, width: self.frame.width, height: self.header.frame.height * 4.3)
+            self.background.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.header.frame.height * 4.3)
         }
     }
     

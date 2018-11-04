@@ -16,6 +16,7 @@ class CompletedCellView: SpringView {
     var headerLabel: UILabel!
     var headerColor: UIColor!
     var taskTableView: UITableView!
+    var numCompletedLabel: UILabel!
     
     var taskTag: TaskTag!
     var list: [Task]!
@@ -69,6 +70,12 @@ class CompletedCellView: SpringView {
         headerLabel.font = UIFont(name: "Quicksand-Bold", size: 24)
         header.addSubview(headerLabel)
         
+        numCompletedLabel = UILabel(frame: CGRect(x: self.frame.width - 10 - 90, y: 10, width: 90, height: self.frame.height - 20))
+        numCompletedLabel.textColor = .white
+        numCompletedLabel.textAlignment = .right
+        numCompletedLabel.font = UIFont(name: "Quicksand-Bold", size: 24)
+        header.addSubview(numCompletedLabel)
+        
         taskTableView = UITableView(frame: CGRect(x: 0, y: header.frame.maxY, width: self.frame.width, height: self.header.frame.height * 4 - 60), style: UITableView.Style.plain)
         taskTableView.delegate = self
         taskTableView.dataSource = self
@@ -92,14 +99,15 @@ class CompletedCellView: SpringView {
             list = personalTasks
         }
         
+        numCompletedLabel.text = "\(list.count) done"
+
         taskTableView.reloadData()
-        //expand()
     }
     
     func expand() {
         UIView.animate(withDuration: 0.5) {
-            self.frame = CGRect(x: self.frame.minX, y: self.frame.minY, width: self.frame.width, height: self.header.frame.height * 4)
-            self.background.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.header.frame.height * 4)
+            self.frame = CGRect(x: self.frame.minX, y: self.frame.minY, width: self.frame.width, height: self.header.frame.height * 4.3)
+            self.background.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.header.frame.height * 4.3)
         }
     }
     
