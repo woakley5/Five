@@ -15,7 +15,7 @@ extension MainViewController {
         let CompletedColors = [Constants.workOrange, Constants.personalBlue, Constants.financeGreen, Constants.homeRed]
         let CompletedTitles = ["Work", "Personal", "Finance", "Home"]
         
-        let tags: [TaskTag] = [.personal, .work, .finance, .home]
+        let tags: [TaskTag] = [.work, .personal, .finance, .home]
         for i in 0..<4 {
             let width = Int(view.frame.width - 40)
             let cell = CompletedCellView(frame: CGRect(x: 20, y: 100 + (100 * i), width: width, height: 60), color: CompletedColors[i]!, tag: tags[i])
