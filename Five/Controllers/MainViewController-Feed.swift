@@ -87,14 +87,14 @@ extension MainViewController {
 
     func dismissFeedCells(completion: @escaping () -> Void) {
         feedExpanded = false
-        let width = Int(self.view.frame.width - 40)
-        let awayFrame = CGRect(x: 20, y: 1000, width: width, height: 80)
         for card in feedCards {
             let deadlineTime = DispatchTime.now()
             DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-                card.animate(toFrame: awayFrame) {
+                UIView.animate(withDuration: 0.3, animations: {
+                    card.alpha = 0
+                }, completion: { (done) in
                     card.removeFromSuperview()
-                }
+                })
             }
         }
         feedCards.removeAll()
