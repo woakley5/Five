@@ -34,18 +34,37 @@ extension MainViewController {
         }
     }
     
+    func dismissBacklogCells(completion: @escaping () -> Void) {
+        if backlogExpanded {
+            contractBacklog()
+        }
+        for card in backlogCards {
+            UIView.animate(withDuration: 0.5, animations: {
+                card.frame = CGRect(x: card.frame.minX, y: card.frame.maxY + 900, width: card.frame.width, height: card.frame.height)
+            }) { (done) in
+                card.removeFromSuperview()
+                self.backlogCards.removeFirst()
+            }
+        }
+        completion()
+    }
+    
     @objc func tappedBacklogCell(sender: UITapGestureRecognizer) {
         print(sender.view!.tag)
         if !backlogExpanded {
             expandAndShowBacklogCell(cellIndex: sender.view!.tag - 50)
         } else {
-            backlogExpanded = false
-            for (i, card) in backlogCards.enumerated() {
-                card.contract()
-                let width = Int(view.frame.width - 40)
-                UIView.animate(withDuration: 0.5) {
-                    card.frame = CGRect(x: 20, y: 100 + (100 * i), width: width, height: 60)
-                }
+            contractBacklog()
+        }
+    }
+    
+    func contractBacklog() {
+        backlogExpanded = false
+        for (i, card) in backlogCards.enumerated() {
+            card.contract()
+            let width = Int(view.frame.width - 40)
+            UIView.animate(withDuration: 0.5) {
+                card.frame = CGRect(x: 20, y: 100 + (100 * i), width: width, height: 60)
             }
         }
     }
@@ -71,6 +90,12 @@ extension MainViewController {
                     }
                 }
             }
+        }
+    }
+    
+    func dismissBacklog(completion: @escaping () -> Void) {
+        dismissBacklogCells {
+            completion()
         }
     }
     

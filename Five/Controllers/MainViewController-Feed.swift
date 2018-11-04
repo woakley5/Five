@@ -81,7 +81,7 @@ extension MainViewController {
         }
     }
 
-    func hideFeedCells(completion: @escaping () -> Void) {
+    func dismissFeedCells(completion: @escaping () -> Void) {
         feedExpanded = false
         let width = Int(self.view.frame.width - 40)
         let awayFrame = CGRect(x: 20, y: 1000, width: width, height: 80)
@@ -98,6 +98,7 @@ extension MainViewController {
     }
     
     func expandAndShowAddAnimation() {
+        
         feedExpanded = true
         for i in (0..<feedCards.count) {
             let yVal = (20 * i) + 400
@@ -205,6 +206,15 @@ extension MainViewController {
             } else {
                 expandAndShowAddAnimation()
             }
+        }
+    }
+    
+    func dismissFeedState(completion: @escaping () -> Void) {
+        if feedExpanded {
+            dismissAddEvent()
+        }
+        dismissFeedCells {
+            completion()
         }
     }
 
