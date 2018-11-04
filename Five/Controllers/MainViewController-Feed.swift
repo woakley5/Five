@@ -49,12 +49,16 @@ extension MainViewController {
     
     func createFeedCell(task: Task, addToSubview: Bool) {
         let i = feedCards.count
-        let gradients: [GRADIENT] = [BLUE_GRADIENT(), PINK_GRADIENT()]
+        let gradients: [GRADIENT] = [PERSONAL_BLUE_GRADIENT(), WORK_ORANGE_GRADIENT(), FINANCE_GREEN_GRADIENT(), HOME_RED_GRADIENT()]
         let gradient: GRADIENT
-        if i % 2 == 0 {
+        if task.tag == .personal {
             gradient = gradients[0]
-        } else {
+        } else if task.tag == .work {
             gradient = gradients[1]
+        } else if task.tag == .finance {
+            gradient = gradients[2]
+        } else {
+            gradient = gradients[3]
         }
         let yVal = (100 * i) + 100
         let width = Int(self.view.frame.width - 40)
