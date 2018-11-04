@@ -75,6 +75,11 @@ class BacklogCellView: SpringView {
         taskTableView.backgroundColor = .clear
         background.contentView.addSubview(taskTableView)
 
+        reload()
+        //expand()
+    }
+    
+    func reload() {
         workTasks = TaskList.getBacklogTasksByTag(tag: .work)
         homeTasks = TaskList.getBacklogTasksByTag(tag: .home)
         financeTasks = TaskList.getBacklogTasksByTag(tag: .finance)
@@ -93,7 +98,6 @@ class BacklogCellView: SpringView {
         }
         
         taskTableView.reloadData()
-        //expand()
     }
     
     func expand() {
