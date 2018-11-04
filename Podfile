@@ -14,5 +14,6 @@ target 'Five' do
   pod 'SkyFloatingLabelTextField'
   pod 'DatePicker', '1.0.0'
   pod 'ChameleonFramework'
+  pod 'Alamofire'
   
 end

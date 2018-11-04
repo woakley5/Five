@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Alamofire
 
 extension MainViewController {
 
@@ -181,7 +182,21 @@ extension MainViewController {
                 }
             }
         }
-        TaskList.createTask(text: String(data.prefix(data.count - offset)), tag: tag)
+        let content = String(data.prefix(data.count - offset))
+        TaskList.createTask(text: content, tag: tag)
+        var req = "https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment"
+        let key = "73d69750e4b1427fa009b793b01842d2"
+        let documents = ["documents": [["language": "en","id": "1","text": content]]]
+        let headers: HTTPHeaders = [
+            "Ocp-Apim-Subscription-Key": key,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        ]
+        Alamofire.request(req, method: .post, parameters: documents, encoding: JSONEncoding.default, headers: headers).responseJSON {response in
+            print("Result: \(response.result)")
+            print(response.response)
+        }
+
     }
     @objc func saveSpeechEvent() {
         //TODO: get data from addEventCell and save to Task and TaskList
