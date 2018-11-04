@@ -36,6 +36,7 @@ class TaskCellView: SpringView {
     private func initLayer() {
         background.layer.cornerRadius = 20
         background.clipsToBounds = true
+        background.alpha = 0.85
         self.layer.masksToBounds = false
         self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOffset = CGSize(width: 2, height: 6)

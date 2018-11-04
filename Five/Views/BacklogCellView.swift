@@ -47,7 +47,7 @@ class BacklogCellView: SpringView {
         header.clipsToBounds = true
         header.layer.cornerRadius = 20
        // self.layer.masksToBounds = false
-        self.clipsToBounds = true
+        //self.clipsToBounds = true
         self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOffset = CGSize(width: 2, height: 6)
         self.layer.shadowOpacity = 0.5
@@ -56,7 +56,7 @@ class BacklogCellView: SpringView {
     
     private func initUI() {
         background = UIVisualEffectView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0))
-        background.effect = UIBlurEffect(style: .light)
+        //background.effect = UIBlurEffect(style: .regular)
         addSubview(background)
         
         header = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))

@@ -23,7 +23,7 @@ class MainViewController: UIViewController {
     //MAIN UI InstanceVariables
     var titleLabel: LTMorphingLabel!
     var addButton: UIButton!
-    var backgroundGradientView: UIView! //GradientView!
+    var backgroundGradientView: UIImageView! //GradientView!
     var backgroundGradient: GRADIENT!
     var mainCardFrame: CGRect!
     var backlogButton: UIButton!
@@ -63,11 +63,12 @@ class MainViewController: UIViewController {
     
     func initCommonUI() {
         //backgroundGradient = BACKGROUND_GRADIENT()
-        backgroundGradientView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
+        backgroundGradientView = UIImageView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
         //backgroundGradientView.colors = backgroundGradient!.colors
         //backgroundGradientView.locations = backgroundGradient!.locations
         //backgroundGradientView.direction = backgroundGradient!.direction
-        backgroundGradientView.backgroundColor = UIColor("#242C49")
+        //backgroundGradientView.backgroundColor = UIColor("#242C49")
+        backgroundGradientView.image = UIImage(named:"background")
         view.addSubview(backgroundGradientView)
         titleLabel = LTMorphingLabel(frame: CGRect(x: 20, y: 10, width: 200, height: 90))
         titleLabel.textAlignment = .left
