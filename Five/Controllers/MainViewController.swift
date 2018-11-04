@@ -99,15 +99,15 @@ class MainViewController: UIViewController {
         addButton.addTarget(self, action: #selector(tappedAddButton), for: .touchUpInside)
         view.addSubview(addButton)
       
-        snapButton = UIButton(frame: CGRect(x: view.frame.width/2 - 20, y: view.frame.height * 0.75, width: 50, height: 50))
-        snapButton.setImage(UIImage(named: "nikybitmoji"), for: .normal)
-        snapButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
-        view.addSubview(snapButton)
-      
         addSpeechButton = UIButton(frame: CGRect(x: view.frame.width - 60 - addButton.frame.width, y: 35, width: 40, height: 40))
         addSpeechButton.setImage(UIImage(named: "microphone"), for: .normal)
         addSpeechButton.addTarget(self, action: #selector(tappedSpeechAddButton), for: .touchUpInside)
         view.addSubview(addSpeechButton)
+        
+        snapButton = UIButton(frame: CGRect(x: view.frame.width - 60 - addButton.frame.width - addSpeechButton.frame.width, y: 35, width: 40, height: 40))
+        snapButton.setImage(UIImage(named: "nikybitmoji"), for: .normal)
+        snapButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        view.addSubview(snapButton)
       
         initBottomButtons()
     }
