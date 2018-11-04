@@ -10,10 +10,15 @@ import Foundation
 import UIKit
 import UIColor_Hex_Swift
 import GradientView
+import ChameleonFramework
 
 class Constants {
+    static let personalBlue: UIColor! = UIColor(hex: "39B8B5")
+    static let workOrange: UIColor! = UIColor(hex: "F79F33")
+    static let financeGreen: UIColor! = UIColor(hex: "A8E921")
+    static let homeRed: UIColor! = UIColor(hex: "CB5D3E")
     
-    
+    static let backgroundPurple: UIColor! = UIColor(hex: "392C79")
 }
 
 protocol GRADIENT {
