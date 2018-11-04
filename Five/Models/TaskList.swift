@@ -24,19 +24,19 @@ class TaskList: NSObject {
 
         let newDate = calendar.date(from: components)
 
-        createTask(text: "Read Huck Finn chapters 1-5", tag: TaskTag.work)
-        createTask(text: "Win Cal Hacks!", tag: TaskTag.personal, dueDate: newDate!)
-        createTask(text: "Fix login screen bug in todo app", tag: TaskTag.work)
+        createTask(text: "Read Huck Finn chapters 1-5", tag: .work)
+        createTask(text: "Win Cal Hacks!", tag: .personal, dueDate: newDate!)
+        createTask(text: "Fix login screen bug in todo app", tag: .work)
         
         components.day = 5
         let newDate1 = calendar.date(from: components)
-        createTask(text: "Allow more than 5 todos?", tag: TaskTag.work, dueDate: newDate1!)
-        createTask(text: "Pay phone bill", tag: TaskTag.finance)
+        createTask(text: "Allow more than 5 todos?", tag: .work, dueDate: newDate1!)
+        createTask(text: "Pay phone bill", tag: .finance)
         
         components.month = 10
         components.day = 28
         let newDate2 = calendar.date(from: components)
-        createTask(text: "Find dress for wedding", tag: TaskTag.home, dueDate: newDate2!)
+        createTask(text: "Find dress for wedding", tag: .home, dueDate: newDate2!)
     }
     
     static func createTask(text: String, tag: TaskTag) {
@@ -51,7 +51,7 @@ class TaskList: NSObject {
     
     static func createTaskHelper(_ task: Task) {
         if taskList.count < 5 {
-            task.status = TaskStatus.active
+            task.status = .active
         }
         taskList.append(task)
     }
@@ -61,7 +61,7 @@ class TaskList: NSObject {
     }
     
     static func getCompletedToday() -> Int {
-        let completed = getTasksByStatus(status: TaskStatus.completed)
+        let completed = getTasksByStatus(status: .completed)
         
         let date = Date()
         let calendar = Calendar.current
@@ -72,5 +72,22 @@ class TaskList: NSObject {
     
     static func getNumTasksCompleted() -> Int {
         return taskList.count
+    }
+    
+    static func getNextActive() -> Task? {
+        let active = getTasksByStatus(status: .active)
+        if active.count >= 5 {
+            return nil
+        }
+        
+        let backlog = getTasksByStatus(status: TaskStatus.backlog)
+        
+        if backlog.count > 0 {
+            let newActive = backlog[0]
+            newActive.switchStatus(status: .active)
+            return newActive
+        }
+        
+        return nil
     }
 }
