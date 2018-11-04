@@ -35,8 +35,4 @@ class AchievementList: NSObject {
         let newlyCompleted = uncompleted.filter { $0.checkCompleted() == true }
         return newlyCompleted
     }
-    
-    override init() {
-        
-    }
 }

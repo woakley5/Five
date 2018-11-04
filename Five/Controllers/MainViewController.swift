@@ -29,6 +29,7 @@ class MainViewController: UIViewController {
     var backlogButton: UIButton!
     var feedButton: UIButton!
     var completedButton: UIButton!
+    var user: User!
     var underline: UIView!
     
     //FEED INSTANCE VARIABLES
@@ -44,9 +45,11 @@ class MainViewController: UIViewController {
     var completedCards: [CompletedCellView] = []
     var completedExpanded = false
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        let user = User()
+        self.user = user
+        user.setupListeners()
         TaskList.addSampleTasks()
         AchievementList.setAchievements()
         

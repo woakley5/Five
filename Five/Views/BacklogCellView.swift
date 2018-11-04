@@ -80,8 +80,6 @@ class BacklogCellView: SpringView {
         financeTasks = TaskList.getBacklogTasksByTag(tag: .finance)
         personalTasks = TaskList.getBacklogTasksByTag(tag: .personal)
         
-        print(homeTasks)
-        
         if taskTag == .work {
             list = workTasks
         } else if taskTag == .finance {
