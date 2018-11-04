@@ -26,10 +26,10 @@ class SelectGroupContainerView: UIView, GroupButtonProtocol {
     }
     
     func createGroups() {
-        personal = SelectGroupButtonView(frame: CGRect(x: 10, y: 20, width: 130, height: 40), color: UIColor.red, group: "Personal", buttonTag: .personal)
-        work = SelectGroupButtonView(frame: CGRect(x: personal.frame.maxX + 20, y: personal.frame.minY, width: 130, height: 40), color: UIColor.yellow, group: "Work", buttonTag: .work)
-        finance = SelectGroupButtonView(frame: CGRect(x: personal.frame.minX, y: personal.frame.maxY + 20, width: 130, height: 40), color: UIColor.green, group: "Finance", buttonTag: .finance)
-        home = SelectGroupButtonView(frame: CGRect(x: work.frame.minX, y: finance.frame.minY, width: 130, height: 40), color: UIColor.green, group: "Home", buttonTag: .home)
+        personal = SelectGroupButtonView(frame: CGRect(x: 10, y: 20, width: 130, height: 40), color: Constants.personalBlue, group: "Personal", buttonTag: .personal)
+        work = SelectGroupButtonView(frame: CGRect(x: personal.frame.maxX + 20, y: personal.frame.minY, width: 130, height: 40), color: Constants.workOrange, group: "Work", buttonTag: .work)
+        finance = SelectGroupButtonView(frame: CGRect(x: personal.frame.minX, y: personal.frame.maxY + 20, width: 130, height: 40), color: Constants.financeGreen, group: "Finance", buttonTag: .finance)
+        home = SelectGroupButtonView(frame: CGRect(x: work.frame.minX, y: finance.frame.minY, width: 130, height: 40), color: Constants.homeRed, group: "Home", buttonTag: .home)
         
         personal.delegate = self
         work.delegate = self
