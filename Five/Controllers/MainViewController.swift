@@ -51,7 +51,7 @@ class MainViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        switchStateTo(.feed)
+        setCurrentState(.feed)
     }
     
     func animateLabel(withText: String) {
@@ -114,27 +114,31 @@ class MainViewController: UIViewController {
         switchStateTo(.completed)
     }
     
-    func switchStateTo(_ state: STATES) {
-        currentState = state
-        if state == .backlog {
-            dismissAddEvent()
-            hideFeedCells() {
-                print("Showing backlog")
-                self.initBacklogCells()
+    func switchStateTo(_ toState: STATES) {
+        let fromState = currentState
+        if fromState == STATES.backlog {
+            dismissBacklog {
+                self.setCurrentState(toState)
             }
+        } else if fromState == STATES.feed {
+            dismissFeedState {
+                self.setCurrentState(toState)
+            }
+        } else if fromState == STATES.completed {
+            setCurrentState(toState)
+        }
+    }
+    
+    func setCurrentState(_ toState: STATES) {
+        currentState = toState
+        if currentState == STATES.backlog {
+            initBacklogCells()
             animateLabel(withText: "backlog")
-            
-        } else if state == .feed {
+        } else if currentState == STATES.feed {
             initFeedCells()
             animateLabel(withText: "my five")
-            
-        } else if state == .completed {
-            dismissAddEvent()
-            hideFeedCells() {
-                print("hid feed cells")
-            }
+        } else if currentState == STATES.completed {
             animateLabel(withText: "completed")
-
         }
     }
     

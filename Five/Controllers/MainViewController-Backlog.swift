@@ -15,9 +15,10 @@ extension MainViewController {
         let backlogColors = [UIColor("#EA7F6B"), UIColor("#5CCAE5"), UIColor("#10CF98"), UIColor("#5A4FB1")]
         let backlogTitles = ["Work", "Personal", "Finance", "Home"]
         
+        let tags: [TaskTag] = [.personal, .work, .finance, .home]
         for i in 0..<4 {
             let width = Int(view.frame.width - 40)
-            let cell = BacklogCellView(frame: CGRect(x: 20, y: 100 + (100 * i), width: width, height: 60), color: backlogColors[i])
+            let cell = BacklogCellView(frame: CGRect(x: 20, y: 100 + (100 * i), width: width, height: 60), color: backlogColors[i], tag: tags[i])
             cell.headerLabel.text = backlogTitles[i]
             cell.header.tag = i + 50
             let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappedBacklogCell(sender:)))
@@ -34,18 +35,37 @@ extension MainViewController {
         }
     }
     
+    func dismissBacklogCells(completion: @escaping () -> Void) {
+        if backlogExpanded {
+            contractBacklog()
+        }
+        for card in backlogCards {
+            UIView.animate(withDuration: 0.5, animations: {
+                card.frame = CGRect(x: card.frame.minX, y: card.frame.maxY + 900, width: card.frame.width, height: card.frame.height)
+            }) { (done) in
+                card.removeFromSuperview()
+                self.backlogCards.removeFirst()
+            }
+        }
+        completion()
+    }
+    
     @objc func tappedBacklogCell(sender: UITapGestureRecognizer) {
         print(sender.view!.tag)
         if !backlogExpanded {
             expandAndShowBacklogCell(cellIndex: sender.view!.tag - 50)
         } else {
-            backlogExpanded = false
-            for (i, card) in backlogCards.enumerated() {
-                card.contract()
-                let width = Int(view.frame.width - 40)
-                UIView.animate(withDuration: 0.5) {
-                    card.frame = CGRect(x: 20, y: 100 + (100 * i), width: width, height: 60)
-                }
+            contractBacklog()
+        }
+    }
+    
+    func contractBacklog() {
+        backlogExpanded = false
+        for (i, card) in backlogCards.enumerated() {
+            card.contract()
+            let width = Int(view.frame.width - 40)
+            UIView.animate(withDuration: 0.5) {
+                card.frame = CGRect(x: 20, y: 100 + (100 * i), width: width, height: 60)
             }
         }
     }
@@ -71,6 +91,12 @@ extension MainViewController {
                     }
                 }
             }
+        }
+    }
+    
+    func dismissBacklog(completion: @escaping () -> Void) {
+        dismissBacklogCells {
+            completion()
         }
     }
     
