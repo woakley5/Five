@@ -16,7 +16,7 @@ class TaskCellView: SpringView {
     var taskSubtitleLabel: UILabel!
     var gradient: GRADIENT!
     var originalFrame: CGRect!
-
+    var completeButton: UIButton!
 
     init(frame: CGRect, gradient: GRADIENT) {
         super.init(frame: frame)

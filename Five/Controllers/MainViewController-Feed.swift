@@ -128,6 +128,10 @@ extension MainViewController {
         }
     }
     
+    func advanceFeed(sender: UIButton!) {
+        
+    }
+    
     @objc func tappedFeedCell(sender: UITapGestureRecognizer) {
         let view = sender.view as! TaskCellView
         let tag = view.tag
