@@ -38,6 +38,7 @@ class SelectGroupContainerView: UIView, GroupButtonProtocol {
         finance.delegate = self
         home.delegate = self
         
+        selected = .personal
         personal.selectMe()
         
         addSubview(personal)

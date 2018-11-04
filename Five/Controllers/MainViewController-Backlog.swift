@@ -15,7 +15,7 @@ extension MainViewController {
         let backlogColors = [Constants.workOrange, Constants.personalBlue, Constants.financeGreen, Constants.homeRed]
         let backlogTitles = ["Work", "Personal", "Finance", "Home"]
         
-        let tags: [TaskTag] = [.personal, .work, .finance, .home]
+        let tags: [TaskTag] = [.work, .personal, .finance, .home]
         for i in 0..<4 {
             let width = Int(view.frame.width - 40)
             let cell = BacklogCellView(frame: CGRect(x: 20, y: 100 + (100 * i), width: width, height: 60), color: backlogColors[i]!, tag: tags[i])
@@ -97,18 +97,24 @@ extension MainViewController {
     }
     
     @objc func backlogSaveEvent() {
+        //TODO: get data from addEventCell and save to Task and TaskList
         if let text = addEventCell.nameField.text {
             // TODO: ALSO NEED TO GET THE TAG. TAG SHOULD BE REQUIRED. PARSE FOR TAG AND RETURN ERROR IF INCORRECT
             // TODO: CHECK FOR DATE HERE
             // if let dueDate = <date> {
             //   // code
             // else {
-            TaskList.createTask(text: text, tag: .work)
+            if let dueDate = addEventCell.chosenDate {
+                TaskList.createTask(text: text, tag: addEventCell.groups.selected, dueDate: dueDate)
+            } else {
+                TaskList.createTask(text: text, tag: addEventCell.groups.selected)
+            }
+            
             for card in backlogCards {
                 card.reload()
             }
-            
             dismissBacklogAddView()
+
         } else {
             print("Missing field")
         }

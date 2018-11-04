@@ -101,7 +101,7 @@ extension MainViewController {
         completion()
     }
     
-    func expandAndShowAddAnimation() {
+    func expandAndShowAddAnimation(speech: Bool = false) {
         feedExpanded = true
         for i in (0..<feedCards.count) {
             let yVal = (20 * i) + 400
@@ -115,7 +115,11 @@ extension MainViewController {
                 }
             }
         }
-        addEventCell.animate()
+        if speech {
+            addSpeechEventCell.animate()
+        } else {
+            addEventCell.animate()
+        }
     }
     
     func resetAllFeedCardsAnimation() {
@@ -131,23 +135,80 @@ extension MainViewController {
         }
     }
     
-    func showAddEvent() {
-        addButton.setImage(UIImage(named:"cancelIcon"), for: .normal)
-        addEventCell = AddEventCellView(frame: CGRect(x: 20, y: 100, width: view.frame.width - 40, height: view.frame.width - 100), controller: self)
-        view.addSubview(addEventCell)
-        addEventCell.doneButton.addTarget(self, action: #selector(saveEvent), for: .touchUpInside)
-        expandAndShowAddAnimation()
+    func showAddEvent(speech: Bool = false) {
+        if speech {
+            addSpeechButton.setImage(UIImage(named:"cancelIcon"), for: .normal)
+            addSpeechEventCell = AddSpeechEventCellView(frame: CGRect(x: 20, y: 100, width: view.frame.width - 40, height: view.frame.width - 100), controller: self)
+            view.addSubview(addSpeechEventCell)
+            addSpeechEventCell.doneButton.addTarget(self, action: #selector(saveSpeechEvent), for: .touchUpInside)
+            expandAndShowAddAnimation(speech: true)
+        } else {
+            addButton.setImage(UIImage(named:"cancelIcon"), for: .normal)
+            addEventCell = AddEventCellView(frame: CGRect(x: 20, y: 100, width: view.frame.width - 40, height: view.frame.width - 100), controller: self)
+            view.addSubview(addEventCell)
+            addEventCell.doneButton.addTarget(self, action: #selector(saveEvent), for: .touchUpInside)
+            expandAndShowAddAnimation()
+        }
+    }
+    
+    private func parseSpeech(data: String) {
+        var components = data.components(separatedBy: " ")
+        var tag: TaskTag = .personal
+        var offset = 0
+        if components.count >= 3 {
+            let firstWord = components[0].lowercased()
+            if firstWord == "add" {
+                components = [String](components[1..<components.count])
+            }
+            let penultimateWord = components[components.count - 2].lowercased()
+            let ultimateWord = components[components.count - 1].lowercased()
+            offset += penultimateWord.length + ultimateWord.length + 2
+            print(ultimateWord)
+            if penultimateWord == "to" {
+                switch ultimateWord {
+                case "work":
+                    tag = .work
+                case "personal":
+                    print("in personal")
+                    tag = .personal
+                case "finance":
+                    tag = .finance
+                case "home":
+                    tag = .home
+                default:
+                    tag = .personal
+                
+                }
+            }
+        }
+        TaskList.createTask(text: String(data.prefix(data.count - offset)), tag: tag)
+    }
+    @objc func saveSpeechEvent() {
+        //TODO: get data from addEventCell and save to Task and TaskList
+        if let text = addSpeechEventCell.textView.text {
+            parseSpeech(data: text)
+            if feedCards.count < 5 {
+                let list = TaskList.getTasksByStatus(status: .active)
+                createFeedCell(task: list[list.count - 1], addToSubview: true)
+            }
+            dismissAddEvent(speech: true)
+        } else {
+            print("Missing field")
+        }
     }
     
     @objc func saveEvent() {
-        //TODO: get data from addEventCell and save to Task and TaskList
         if let text = addEventCell.nameField.text {
             // TODO: ALSO NEED TO GET THE TAG. TAG SHOULD BE REQUIRED. PARSE FOR TAG AND RETURN ERROR IF INCORRECT
             // TODO: CHECK FOR DATE HERE
             // if let dueDate = <date> {
             //   // code
             // else {
-            TaskList.createTask(text: text, tag: addEventCell.groups.selected)
+            if let dueDate = addEventCell.chosenDate {
+                TaskList.createTask(text: text, tag: addEventCell.groups.selected, dueDate: dueDate)
+            } else {
+                TaskList.createTask(text: text, tag: addEventCell.groups.selected)
+            }
             if feedCards.count < 5 {
                 let list = TaskList.getTasksByStatus(status: .active)
                 createFeedCell(task: list[list.count - 1], addToSubview: true)
@@ -159,14 +220,25 @@ extension MainViewController {
         }
     }
     
-    func dismissAddEvent() {
-        addButton.setImage(UIImage(named:"addIcon"), for: .normal)
-        UIView.animate(withDuration: 0.5, animations: {
-            self.addEventCell.frame = CGRect(x: 500, y: 100, width: self.view.frame.width - 40, height: self.view.frame.width - 100)
-        }) { (done) in
-            self.feedExpanded = false
-            self.addEventCell.removeFromSuperview()
-            self.resetAllFeedCardsAnimation()
+    func dismissAddEvent(speech: Bool = false) {
+        if speech {
+            addSpeechButton.setImage(UIImage(named:"addIcon"), for: .normal)
+            UIView.animate(withDuration: 0.5, animations: {
+                self.addSpeechEventCell.frame = CGRect(x: 500, y: 100, width: self.view.frame.width - 40, height: self.view.frame.width - 100)
+            }) { (done) in
+                self.feedExpanded = false
+                self.addSpeechEventCell.removeFromSuperview()
+                self.resetAllFeedCardsAnimation()
+            }
+        } else {
+            addButton.setImage(UIImage(named:"addIcon"), for: .normal)
+            UIView.animate(withDuration: 0.5, animations: {
+                self.addEventCell.frame = CGRect(x: 500, y: 100, width: self.view.frame.width - 40, height: self.view.frame.width - 100)
+            }) { (done) in
+                self.feedExpanded = false
+                self.addEventCell.removeFromSuperview()
+                self.resetAllFeedCardsAnimation()
+            }
         }
     }
     
