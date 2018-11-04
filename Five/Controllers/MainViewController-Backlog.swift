@@ -73,6 +73,9 @@ extension MainViewController {
     }
     
     func backlogShowAddEvent() {
+        if backlogExpanded {
+            contractBacklog()
+        }
         backlogAddEventShowing = true
         for i in (0..<backlogCards.count) {
             let yVal = (20 * i) + 400
@@ -121,8 +124,6 @@ extension MainViewController {
             self.contractBacklog()
         }
     }
-    
-    
     
     func expandAndShowBacklogCell(cellIndex: Int) {
         backlogExpanded = true

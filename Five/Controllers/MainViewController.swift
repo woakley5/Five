@@ -183,7 +183,7 @@ class MainViewController: UIViewController {
         if currentState == .backlog && !backlogAddEventShowing {
             backlogShowAddEvent()
         } else {
-            contractBacklog()
+            dismissBacklogAddView()
         }
     }
 }
