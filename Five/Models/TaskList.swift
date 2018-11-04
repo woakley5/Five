@@ -50,7 +50,7 @@ class TaskList: NSObject {
     }
     
     static func createTaskHelper(_ task: Task) {
-        if taskList.count < 5 {
+        if getTasksByStatus(status: TaskStatus.active).count < 5 {
             task.status = TaskStatus.active
         }
         taskList.append(task)

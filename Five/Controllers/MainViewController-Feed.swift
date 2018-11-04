@@ -13,7 +13,8 @@ extension MainViewController {
 
     func initFeedCells() {
         let gradients: [GRADIENT] = [BLUE_GRADIENT(), PINK_GRADIENT()]
-        for i in 0..<5 {
+        let tasks = TaskList.getTasksByStatus(status: TaskStatus.active)
+        for i in 0..<tasks.count {
             let gradient: GRADIENT
             if i % 2 == 0 {
                 gradient = gradients[0]
@@ -22,7 +23,7 @@ extension MainViewController {
             }
             let yVal = (100 * i) + 100
             let width = Int(self.view.frame.width - 40)
-            let card = TaskCellView(frame: CGRect(x: 20, y: yVal, width: width, height: 80), gradient: gradient)
+            let card = TaskCellView(frame: CGRect(x: 20, y: yVal, width: width, height: 80), gradient: gradient, task: tasks[i])
             feedCards.append(card)
             //let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappedFeedCell(sender:)))
             //card.addGestureRecognizer(tapGestureRecognizer)
