@@ -41,7 +41,7 @@ extension MainViewController {
         }
         for card in backlogCards {
             UIView.animate(withDuration: 0.5, animations: {
-                card.frame = CGRect(x: card.frame.minX, y: card.frame.maxY + 900, width: card.frame.width, height: card.frame.height)
+                card.frame = CGRect(x: card.frame.minX - 500, y: card.frame.maxY, width: card.frame.width, height: card.frame.height)
             }) { (done) in
                 card.removeFromSuperview()
                 self.backlogCards.removeFirst()
