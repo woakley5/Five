@@ -97,18 +97,23 @@ extension MainViewController {
     }
     
     @objc func backlogSaveEvent() {
+        //TODO: get data from addEventCell and save to Task and TaskList
         if let text = addEventCell.nameField.text {
             // TODO: ALSO NEED TO GET THE TAG. TAG SHOULD BE REQUIRED. PARSE FOR TAG AND RETURN ERROR IF INCORRECT
             // TODO: CHECK FOR DATE HERE
             // if let dueDate = <date> {
             //   // code
             // else {
-            TaskList.createTask(text: text, tag: .work)
-            for card in backlogCards {
-                card.reload()
+            guard let dueDate = addEventCell.chosenDate else {
+                return
+            }
+            TaskList.createTask(text: text, tag: addEventCell.groups.selected, dueDate: dueDate)
+            if feedCards.count < 5 {
+                let list = TaskList.getTasksByStatus(status: .active)
+                createFeedCell(task: list[list.count - 1], addToSubview: true)
             }
             
-            dismissBacklogAddView()
+            dismissAddEvent()
         } else {
             print("Missing field")
         }
