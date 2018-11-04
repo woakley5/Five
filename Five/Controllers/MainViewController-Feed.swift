@@ -29,6 +29,8 @@ extension MainViewController {
             //card.addGestureRecognizer(tapGestureRecognizer)
             card.animation = "slideUp"
             card.duration = 1.0
+            card.completeButton.addTarget(self, action: #selector(markTaskAsDone(sender:)), for: .touchUpInside)
+            card.completeButton.tag = i
             card.tag = i
         }
         
@@ -129,8 +131,25 @@ extension MainViewController {
         }
     }
     
-    func advanceFeed(sender: UIButton!) {
-        
+    @objc func markTaskAsDone(sender: UIButton) {
+        let card = feedCards[sender.tag]
+        card.task.completeTask()
+        UIView.animate(withDuration: 0.25, animations: {
+            card.frame = CGRect(x: card.frame.maxX + 500, y: card.frame.minY, width: card.frame.width, height: card.frame.height)
+        }) { (done) in
+            card.removeFromSuperview()
+            self.advanceFeed(removedIndex: sender.tag)
+        }
+    }
+    
+    func advanceFeed(removedIndex: Int) {
+        print("Removed event " + String(removedIndex))
+        let tasks = TaskList.getTasksByStatus(status: TaskStatus.active)
+        for x in removedIndex..<feedCards.count {
+            UIView.animate(withDuration: 0.5) {
+                feedCards[x]
+            }
+        }
     }
     
     @objc func tappedFeedCell(sender: UITapGestureRecognizer) {

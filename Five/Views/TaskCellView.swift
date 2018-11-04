@@ -51,11 +51,16 @@ class TaskCellView: SpringView {
     }
     
     private func initUIElements() {
-        taskTitleLabel = UILabel(frame: CGRect(x: 20, y: 10, width: background.frame.width/2, height: 30))
+        taskTitleLabel = UILabel(frame: CGRect(x: 20, y: 10, width: background.frame.width - 45, height: 30))
         taskTitleLabel.font = UIFont(name: "Quicksand-Bold", size: 18)
         taskTitleLabel.textColor = .white
         taskTitleLabel.text = task.text
         background.addSubview(taskTitleLabel)
+        
+        completeButton = UIButton(frame: CGRect(x: frame.width - 10 - 35, y: frame.height/2 - 35/2, width: 35, height: 35))
+        completeButton.setImage(UIImage(named: "checkIcon"), for: .normal)
+        //doneButton.addTarget(self, action: #selector(tappedAddButton), for: .touchUpInside)
+        addSubview(completeButton)
         
         if let dueDate = task.dueDate {
             let date = dueDate.addingTimeInterval(60.0 * 60.0 * 23.0 + 60.0 * 59.0)
