@@ -9,6 +9,9 @@
 import UIKit
 import UIColor_Hex_Swift
 import GradientView
+import SCSDKLoginKit
+import SCSDKBitmojiKit
+import SCSDKCreativeKit
 
 class MainViewController: UIViewController {
     
@@ -19,6 +22,9 @@ class MainViewController: UIViewController {
     }
     
     var currentState: STATES!
+    
+    var snapButton: UIButton!
+    var avatarImageView: UIImageView!
     
     //MAIN UI InstanceVariables
     var titleLabel: LTMorphingLabel!
@@ -87,6 +93,12 @@ class MainViewController: UIViewController {
         addButton.setImage(UIImage(named: "addIcon"), for: .normal)
         addButton.addTarget(self, action: #selector(tappedAddButton), for: .touchUpInside)
         view.addSubview(addButton)
+        
+        snapButton = UIButton(frame: CGRect(x: view.frame.width/2 - 20, y: view.frame.height * 0.75, width: 50, height: 50))
+        snapButton.setImage(UIImage(named: "nikybitmoji"), for: .normal)
+        snapButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        view.addSubview(snapButton)
+        
         initBottomButtons()
     }
     
