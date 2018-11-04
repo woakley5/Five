@@ -147,7 +147,7 @@ extension MainViewController {
             // if let dueDate = <date> {
             //   // code
             // else {
-            TaskList.createTask(text: text, tag: .work)
+            TaskList.createTask(text: text, tag: addEventCell.groups.selected)
             if feedCards.count < 5 {
                 let list = TaskList.getTasksByStatus(status: .active)
                 createFeedCell(task: list[list.count - 1], addToSubview: true)

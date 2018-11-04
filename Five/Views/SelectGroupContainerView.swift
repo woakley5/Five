@@ -19,6 +19,8 @@ class SelectGroupContainerView: UIView, GroupButtonProtocol {
     var work: SelectGroupButtonView!
     var finance: SelectGroupButtonView!
     
+    var selected: TaskTag!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -36,6 +38,8 @@ class SelectGroupContainerView: UIView, GroupButtonProtocol {
         finance.delegate = self
         home.delegate = self
         
+        personal.selectMe()
+        
         addSubview(personal)
         addSubview(work)
         addSubview(finance)
@@ -49,6 +53,7 @@ class SelectGroupContainerView: UIView, GroupButtonProtocol {
 
 extension SelectGroupContainerView {
     func select(buttonTag: TaskTag) {
+        selected = buttonTag
         if buttonTag == .finance {
             finance.selectMe()
             work.unselectMe()
