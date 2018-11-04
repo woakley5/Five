@@ -10,15 +10,24 @@ import UIKit
 import GradientView
 import UIColor_Hex_Swift
 import SkyFloatingLabelTextField
+import DatePicker
 
 class AddEventCellView: SpringView {
     
     var titleLabel: UILabel!
     var nameField: SkyFloatingLabelTextField!
     var doneButton: UIButton!
+    var calendarIcon: UIButton!
+    var dateLabel: UILabel!
+    
+    var viewController: UIViewController!
+    
+    //var calendarView: UIView!
+    //var datePicker: UIDatePicker!
 
-    override init(frame: CGRect) {
+    init(frame: CGRect, controller: UIViewController) {
         super.init(frame: frame)
+        viewController = controller
         animation = "slideLeft"
         initLayer()
         initUIElements()
@@ -62,7 +71,39 @@ class AddEventCellView: SpringView {
         doneButton.setImage(UIImage(named: "checkIcon"), for: .normal)
         //doneButton.addTarget(self, action: #selector(tappedAddButton), for: .touchUpInside)
         addSubview(doneButton)
+        
+        calendarIcon = UIButton(frame: CGRect(x:20, y: nameField.frame.minY + 65, width: 35, height:35))
+        calendarIcon.setImage(UIImage(named: "calendarIcon"), for: .normal)
+        calendarIcon.addTarget(self, action: #selector(openDatePicker), for: .touchUpInside)
+        addSubview(calendarIcon)
+        
+        dateLabel = UILabel(frame:CGRect(x:calendarIcon.frame.minX + 40, y: nameField.frame.minY + 65, width: self.frame.width, height: 35))
+        dateLabel.font = UIFont(name: "Quicksand-Bold", size: 14)
+        dateLabel.textColor = .white
+        dateLabel.text = "11/11/2018"
+        addSubview(dateLabel)
     }
     
+    
+    @objc func openDatePicker(_ sender: UIButton) {
+        //self.label.alpha = 1
+        print("HERERERERERERE")
+        let datePicker = DatePicker()
+        datePicker.vc.view.layer.zPosition = 5000
+        datePicker.vc.view.alpha = 0.9
+        datePicker.colors(main: .black, background: .white, inactive: UIColor("#392C79"))
+        datePicker.setup() { (selected, date) in
+            if selected, let selectedDate = date {
+                //print("\(selectedDate)")
+                self.dateLabel.text = "\(selectedDate.month())/\(selectedDate.day())/\(selectedDate.year())"
+            } else {
+                self.dateLabel.text = "11/11/2018"
+            }
+        }
+        
+       // datePicker.displayPopOver(on: button, in: self)
+        datePicker.display(in: viewController)
+//        datePicker.vc.view.layer.zPosition = 1000
+    }
     
 }
