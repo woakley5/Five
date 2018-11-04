@@ -61,7 +61,7 @@ class BacklogCellView: SpringView {
         headerLabel.font = UIFont(name: "Quicksand-Bold", size: 24)
         header.addSubview(headerLabel)
         
-        taskTableView = UITableView(frame: CGRect(x: self.frame.height, y: 0, width: self.frame.width, height: self.header.frame.height * 4 - 60), style: UITableView.Style.plain)
+        taskTableView = UITableView(frame: CGRect(x: 0, y: header.frame.maxY, width: self.frame.width, height: self.header.frame.height * 4 - 60), style: UITableView.Style.plain)
         taskTableView.delegate = self
         taskTableView.dataSource = self
         taskTableView.backgroundColor = .clear
@@ -107,7 +107,10 @@ extension BacklogCellView: UITableViewDataSource, UITableViewDelegate {
         let cell = UITableViewCell.init(style: .default, reuseIdentifier: "reuse")
         cell.awakeFromNib()
         cell.textLabel?.text = tasks[indexPath.row].text
+        cell.textLabel?.textColor = .white
+        cell.textLabel?.font = UIFont(name: "Quicksand-Regular", size: 16)
         cell.backgroundColor = .clear
+        cell.isUserInteractionEnabled = false
         return cell
     }
     
