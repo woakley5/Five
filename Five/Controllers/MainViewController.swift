@@ -176,13 +176,13 @@ class MainViewController: UIViewController {
     @objc func tappedAddButton() {
         if currentState == .feed && !feedExpanded {
             showAddEvent()
-        } else if feedExpanded {
+        } else if currentState == .feed {
             dismissAddEvent()
         }
         
         if currentState == .backlog && !backlogAddEventShowing {
             backlogShowAddEvent()
-        } else {
+        } else if currentState == .backlog {
             dismissBacklogAddView()
         }
     }
