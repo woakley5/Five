@@ -36,6 +36,8 @@ class MainViewController: UIViewController {
     var feedExpanded = false
     
     //BACKLOG INSTANCE VARIABLES
+    var backlogCards: [BacklogCellView] = []
+    var backlogExpanded = false
     
     //COMPLETED INSTANCE VARIABLES
 
@@ -115,7 +117,10 @@ class MainViewController: UIViewController {
     func switchStateTo(_ state: STATES) {
         currentState = state
         if state == .backlog {
-            hideFeedCells()
+            hideFeedCells() {
+                print("Showing backlog")
+                self.initBacklogCells()
+            }
             animateLabel(withText: "backlog")
             
         } else if state == .feed {
@@ -123,7 +128,9 @@ class MainViewController: UIViewController {
             animateLabel(withText: "my five")
             
         } else if state == .completed {
-            hideFeedCells()
+            hideFeedCells() {
+                print("hid feed cells")
+            }
             animateLabel(withText: "completed")
 
         }
