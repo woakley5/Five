@@ -195,6 +195,9 @@ extension MainViewController {
         Alamofire.request(req, method: .post, parameters: documents, encoding: JSONEncoding.default, headers: headers).responseJSON {response in
             print("Result: \(response.result)")
             print(response.response)
+            if true {
+                sendNotification(title: "Alert", subtitle: "You might want to prioritize this!")
+            }
         }
 
     }
