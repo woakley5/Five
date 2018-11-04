@@ -97,14 +97,14 @@ class CompletedCellView: SpringView {
     }
     
     func expand() {
-        UIView.animate(withDuration: 1.0) {
+        UIView.animate(withDuration: 0.5) {
             self.frame = CGRect(x: self.frame.minX, y: self.frame.minY, width: self.frame.width, height: self.header.frame.height * 4)
             self.background.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.header.frame.height * 4)
         }
     }
     
     func contract() {
-        UIView.animate(withDuration: 1.0) {
+        UIView.animate(withDuration: 0.5) {
             self.frame = CGRect(x: self.frame.minX, y: self.frame.minY, width: self.frame.width, height: self.header.frame.height)
             self.background.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: 0)
         }
