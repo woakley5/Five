@@ -99,7 +99,7 @@ class AddSpeechEventCellView: SpringView, SFSpeechRecognizerDelegate {
 //        addSubview(doneButton)
 
         microphoneButton = UIButton(frame: CGRect(x:20, y: titleLabel.frame.minY + 40, width: 35, height:35))
-        microphoneButton.setImage(UIImage(named: "timerIcon"), for: .normal)
+        microphoneButton.setImage(UIImage(named: "microphone"), for: .normal)
         microphoneButton.addTarget(self, action: #selector(microphoneTapped), for: .touchUpInside)
         addSubview(microphoneButton)
 

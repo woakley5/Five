@@ -104,7 +104,7 @@ class MainViewController: UIViewController {
         view.addSubview(snapButton)
       
         addSpeechButton = UIButton(frame: CGRect(x: view.frame.width - 60 - addButton.frame.width, y: 35, width: 40, height: 40))
-        addSpeechButton.setImage(UIImage(named: "addIcon"), for: .normal)
+        addSpeechButton.setImage(UIImage(named: "microphone"), for: .normal)
         addSpeechButton.addTarget(self, action: #selector(tappedSpeechAddButton), for: .touchUpInside)
         view.addSubview(addSpeechButton)
       
@@ -202,9 +202,9 @@ class MainViewController: UIViewController {
         }
         
         if currentState == .backlog && !backlogAddEventShowing {
-            backlogShowAddEvent()
+            backlogShowAddEvent(speech: false)
         } else if currentState == .backlog {
-            dismissBacklogAddView()
+            dismissBacklogAddView(speech: false)
         }
     }
     
@@ -213,6 +213,12 @@ class MainViewController: UIViewController {
             showAddEvent(speech: true)
         } else if feedExpanded {
             dismissAddEvent(speech: true)
+        }
+        
+        if currentState == .backlog && !backlogAddEventShowing {
+            backlogShowAddEvent(speech: true)
+        } else if currentState == .backlog {
+            dismissBacklogAddView(speech: true)
         }
     }
 }
