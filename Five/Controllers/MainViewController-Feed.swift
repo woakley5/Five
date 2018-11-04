@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SwiftyJSON
 import Alamofire
 
 extension MainViewController {
@@ -185,7 +186,7 @@ extension MainViewController {
         let content = String(data.prefix(data.count - offset))
         TaskList.createTask(text: content, tag: tag)
         var req = "https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment"
-        let key = "73d69750e4b1427fa009b793b01842d2"
+        let key = "939c3e71491d401aa8f8ace1f405b34e"
         let documents = ["documents": [["language": "en","id": "1","text": content]]]
         let headers: HTTPHeaders = [
             "Ocp-Apim-Subscription-Key": key,
@@ -193,10 +194,24 @@ extension MainViewController {
             "Accept": "application/json"
         ]
         Alamofire.request(req, method: .post, parameters: documents, encoding: JSONEncoding.default, headers: headers).responseJSON {response in
-            print("Result: \(response.result)")
-            print(response.response)
-            if true {
-                sendNotification(title: "Alert", subtitle: "You might want to prioritize this!")
+            print(response.value)
+            var sentiment: Double = -1
+            do {
+                let json = try JSON(data: response.data as! Data)
+                print(json)
+                print("\n\n\n\n")
+                sentiment = json["documents"][0]["score"].doubleValue
+
+            } catch {
+                print("fulc")
+            }
+
+            if sentiment < 0 {
+                print("we failed fam")
+            }
+
+            if sentiment < 0.5 {
+                self.sendNotification(title: "Alert", subtitle: "You might want to prioritize this!")
             }
         }
 

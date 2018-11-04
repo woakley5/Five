@@ -16,5 +16,6 @@ target 'Five' do
   pod 'ChameleonFramework'
   pod 'Alamofire'
   pod 'SnapSDK'
+  pod 'SwiftyJSON'
   
 end

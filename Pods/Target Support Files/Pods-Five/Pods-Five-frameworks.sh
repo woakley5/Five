@@ -158,6 +158,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${PODS_ROOT}/SnapSDK/SCSDKCoreKit.framework"
   install_framework "${PODS_ROOT}/SnapSDK/SCSDKLoginKit.framework"
   install_framework "${PODS_ROOT}/SnapSDK/SCSDKCoreKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIColor_Hex_Swift/UIColor_Hex_Swift.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/YYImage/YYImage.framework"
 fi
@@ -177,6 +178,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${PODS_ROOT}/SnapSDK/SCSDKCoreKit.framework"
   install_framework "${PODS_ROOT}/SnapSDK/SCSDKLoginKit.framework"
   install_framework "${PODS_ROOT}/SnapSDK/SCSDKCoreKit.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIColor_Hex_Swift/UIColor_Hex_Swift.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/YYImage/YYImage.framework"
 fi
