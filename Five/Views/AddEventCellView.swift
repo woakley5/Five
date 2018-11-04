@@ -17,13 +17,11 @@ class AddEventCellView: SpringView {
     var titleLabel: UILabel!
     var nameField: SkyFloatingLabelTextField!
     var doneButton: UIButton!
+    var groups: SelectGroupContainerView!
     var calendarIcon: UIButton!
     var dateLabel: UILabel!
     
     var viewController: UIViewController!
-    
-    //var calendarView: UIView!
-    //var datePicker: UIDatePicker!
 
     init(frame: CGRect, controller: UIViewController) {
         super.init(frame: frame)
@@ -67,7 +65,10 @@ class AddEventCellView: SpringView {
         nameField.titleFont = UIFont(name: "Quicksand-Medium", size: 14)!
         addSubview(nameField)
         
-        doneButton = UIButton(frame: CGRect(x: frame.width - 20 - 35, y: frame.height - 20 - 35, width: 35, height: 35))
+        groups = SelectGroupContainerView(frame: CGRect(x: 20, y: nameField.frame.maxY + 20, width: frame.width - 40, height: 100))
+        addSubview(groups)
+        
+        doneButton = UIButton(frame: CGRect(x: frame.width - 20 - 35, y: 20, width: 35, height: 35))
         doneButton.setImage(UIImage(named: "checkIcon"), for: .normal)
         //doneButton.addTarget(self, action: #selector(tappedAddButton), for: .touchUpInside)
         addSubview(doneButton)

@@ -14,11 +14,11 @@ enum TaskStatus {
     case completed
 }
 
-enum TaskTag {
-    case personal
-    case work
-    case home
-    case finance
+enum TaskTag: String {
+    case personal = "Personal"
+    case work = "Word"
+    case home = "Home"
+    case finance = "Finance"
 }
 
 class Task: NSObject {
