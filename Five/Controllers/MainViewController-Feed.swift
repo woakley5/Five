@@ -121,13 +121,12 @@ extension MainViewController {
     func resetAllFeedCardsAnimation() {
         feedExpanded = false
         for (i, card) in feedCards.enumerated() {
-            print("the value of i is \(i)")
             card.completeButton.isUserInteractionEnabled = true
             let yVal = (100 * i) + 100
             let width = Int(self.view.frame.width - 40)
             let frame = CGRect(x: 20, y: yVal, width: width, height: 80)
             card.animate(toFrame: frame) {
-                print("Done animating reset")
+//                print("Done animating reset")
             }
         }
     }
@@ -188,8 +187,6 @@ extension MainViewController {
     }
     
     func advanceFeed(removedIndex: Int) {
-        print("Removed event " + String(removedIndex))
-        
         for x in removedIndex..<feedCards.count {
             let cardFrame = self.feedCards[x].frame
             UIView.animate(withDuration: 0.5) {
