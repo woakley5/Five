@@ -53,7 +53,7 @@ class AddEventCellView: SpringView {
         titleLabel.text = "New Task"
         addSubview(titleLabel)
         
-        nameField = SkyFloatingLabelTextField(frame: CGRect(x: 20, y: 60, width: frame.width - 40, height: 50))
+        nameField = SkyFloatingLabelTextField(frame: CGRect(x: 20, y: 45, width: frame.width - 40, height: 50))
         nameField.placeholder = "Task Name"
         nameField.selectedTitle = "Task Name"
         nameField.selectedLineColor = .white
@@ -64,9 +64,6 @@ class AddEventCellView: SpringView {
         nameField.font = UIFont(name: "Quicksand-Medium", size: 16)
         nameField.titleFont = UIFont(name: "Quicksand-Medium", size: 14)!
         addSubview(nameField)
-        
-        groups = SelectGroupContainerView(frame: CGRect(x: 20, y: nameField.frame.maxY + 20, width: frame.width - 40, height: 100))
-        addSubview(groups)
         
         doneButton = UIButton(frame: CGRect(x: frame.width - 20 - 35, y: 20, width: 35, height: 35))
         doneButton.setImage(UIImage(named: "checkIcon"), for: .normal)
@@ -83,6 +80,9 @@ class AddEventCellView: SpringView {
         dateLabel.textColor = .white
         dateLabel.text = "11/11/2018"
         addSubview(dateLabel)
+        
+        groups = SelectGroupContainerView(frame: CGRect(x: 20, y: calendarIcon.frame.maxY, width: frame.width - 40, height: 100))
+        addSubview(groups)
     }
     
     
