@@ -36,9 +36,14 @@ class MainViewController: UIViewController {
     var feedExpanded = false
     
     //BACKLOG INSTANCE VARIABLES
+    var backlogCards: [BacklogCellView] = []
+    var backlogExpanded = false
     
     //COMPLETED INSTANCE VARIABLES
-
+    var completedCards: [CompletedCellView] = []
+    var completedExpanded = false
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         TaskList.addSampleTasks()
@@ -49,7 +54,7 @@ class MainViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        switchStateTo(.feed)
+        setCurrentState(.feed)
     }
     
     func animateLabel(withText: String) {
@@ -112,20 +117,34 @@ class MainViewController: UIViewController {
         switchStateTo(.completed)
     }
     
-    func switchStateTo(_ state: STATES) {
-        currentState = state
-        if state == .backlog {
-            hideFeedCells()
+    func switchStateTo(_ toState: STATES) {
+        let fromState = currentState
+        if fromState == STATES.backlog {
+            dismissBacklog {
+                self.setCurrentState(toState)
+            }
+        } else if fromState == STATES.feed {
+            dismissFeedState {
+                self.setCurrentState(toState)
+            }
+        } else if fromState == STATES.completed {
+            dismissCompleted {
+                self.setCurrentState(toState)
+            }
+        }
+    }
+    
+    func setCurrentState(_ toState: STATES) {
+        currentState = toState
+        if currentState == STATES.backlog {
+            initBacklogCells()
             animateLabel(withText: "backlog")
-            
-        } else if state == .feed {
+        } else if currentState == STATES.feed {
             initFeedCells()
             animateLabel(withText: "my five")
-            
-        } else if state == .completed {
-            hideFeedCells()
+        } else if currentState == STATES.completed {
+            initCompletedCells()
             animateLabel(withText: "completed")
-
         }
     }
     

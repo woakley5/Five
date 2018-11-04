@@ -1,11 +1,19 @@
 PODS:
   - BRYXBanner (0.8.3)
+  - ChameleonFramework (2.1.0):
+    - ChameleonFramework/Default (= 2.1.0)
+  - ChameleonFramework/Default (2.1.0)
+  - DatePicker (1.0.0):
+    - Extended (~> 1.0.4)
+  - Extended (1.0.4)
   - GradientView (2.3.3)
   - SkyFloatingLabelTextField (3.6.0)
   - UIColor_Hex_Swift (4.2.0)
 
 DEPENDENCIES:
   - BRYXBanner
+  - ChameleonFramework
+  - DatePicker (= 1.0.0)
   - GradientView
   - SkyFloatingLabelTextField
   - UIColor_Hex_Swift (~> 4.2.0)
@@ -13,16 +21,22 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - BRYXBanner
+    - ChameleonFramework
+    - DatePicker
+    - Extended
     - GradientView
     - SkyFloatingLabelTextField
     - UIColor_Hex_Swift
 
 SPEC CHECKSUMS:
   BRYXBanner: 8cf1b119792e1cee8d7ba107297ef89f7409bc53
+  ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
+  DatePicker: 7eb10cf9d75d2ff975e3724763d4df8f2cf96ce1
+  Extended: 94fe9d842694e7d81da413f5762d401829bbffd9
   GradientView: b044fa46c24062ee245a07a4e8bea4c5c4d63de0
   SkyFloatingLabelTextField: 38164979b79512f9ff9288ad8acfc4bbf5d843e3
   UIColor_Hex_Swift: bc07fc197421ee896b9ed6dcfa2054b7fbf75145
 
-PODFILE CHECKSUM: 2cfeca1fce7928afbfe7f5908d9c5c36de51ca14
+PODFILE CHECKSUM: 578f735782e63e67b1d7e6b5a2bbe345bf9bd14e
 
 COCOAPODS: 1.5.3

@@ -60,6 +60,14 @@ class TaskList: NSObject {
         return taskList.filter { $0.status == status }
     }
     
+    static func getBacklogTasksByTag(tag: TaskTag) -> [Task] {
+        return taskList.filter { $0.tag == tag && $0.status == .backlog}
+    }
+    
+    static func getCompletedTasksByTag(tag: TaskTag) -> [Task] {
+        return taskList.filter { $0.tag == tag && $0.status == .completed}
+    }
+    
     static func getCompletedToday() -> Int {
         let completed = getTasksByStatus(status: .completed)
         

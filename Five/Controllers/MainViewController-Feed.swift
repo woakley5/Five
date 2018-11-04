@@ -65,15 +65,23 @@ extension MainViewController {
         card.animation = "slideUp"
         card.duration = 1.0
         card.completeButton.addTarget(self, action: #selector(markTaskAsDone(sender:)), for: .touchUpInside)
+        
+        var zVal = backgroundGradientView.layer.zPosition + 5
+        for card in feedCards {
+            card.layer.zPosition = CGFloat(zVal)
+            zVal = zVal - 1
+        }
+        
         card.completeButton.tag = i
         card.tag = i
         
         if addToSubview {
             view.addSubview(card)
+            card.animate()
         }
     }
 
-    func hideFeedCells() {
+    func dismissFeedCells(completion: @escaping () -> Void) {
         feedExpanded = false
         let width = Int(self.view.frame.width - 40)
         let awayFrame = CGRect(x: 20, y: 1000, width: width, height: 80)
@@ -86,6 +94,7 @@ extension MainViewController {
             }
         }
         feedCards.removeAll()
+        completion()
     }
     
     func expandAndShowAddAnimation() {
@@ -95,6 +104,7 @@ extension MainViewController {
             let width = Int(self.view.frame.width - 40)
             let frame = CGRect(x: 20, y: yVal, width: width, height: 80)
             let deadlineTime = DispatchTime.now()
+            feedCards[i].completeButton.isUserInteractionEnabled = false
             DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
                 self.feedCards[i].animate(toFrame: frame) {
                     print("Done animating expand")
@@ -108,6 +118,7 @@ extension MainViewController {
         feedExpanded = false
         for (i, card) in feedCards.enumerated() {
             print("the value of i is \(i)")
+            card.completeButton.isUserInteractionEnabled = true
             let yVal = (100 * i) + 100
             let width = Int(self.view.frame.width - 40)
             let frame = CGRect(x: 20, y: yVal, width: width, height: 80)
@@ -119,7 +130,7 @@ extension MainViewController {
     
     func showAddEvent() {
         addButton.setImage(UIImage(named:"cancelIcon"), for: .normal)
-        addEventCell = AddEventCellView(frame: CGRect(x: 20, y: 100, width: view.frame.width - 40, height: view.frame.width - 100))
+        addEventCell = AddEventCellView(frame: CGRect(x: 20, y: 100, width: view.frame.width - 40, height: view.frame.width - 100), controller: self)
         view.addSubview(addEventCell)
         addEventCell.doneButton.addTarget(self, action: #selector(saveEvent), for: .touchUpInside)
         expandAndShowAddAnimation()
@@ -134,9 +145,15 @@ extension MainViewController {
             //   // code
             // else {
             TaskList.createTask(text: text, tag: .work)
-            // }
+            if feedCards.count < 5 {
+                let list = TaskList.getTasksByStatus(status: .active)
+                createFeedCell(task: list[list.count - 1], addToSubview: true)
+            }
+            
+            dismissAddEvent()
+        } else {
+            print("Missing field")
         }
-        dismissAddEvent()
     }
     
     func dismissAddEvent() {
@@ -190,6 +207,15 @@ extension MainViewController {
             } else {
                 expandAndShowAddAnimation()
             }
+        }
+    }
+    
+    func dismissFeedState(completion: @escaping () -> Void) {
+        if feedExpanded {
+            dismissAddEvent()
+        }
+        dismissFeedCells {
+            completion()
         }
     }
 
