@@ -8,66 +8,224 @@
 
 import UIKit
 import UIColor_Hex_Swift
+import GradientView
+import BRYXBanner
+import SCSDKLoginKit
+import SCSDKBitmojiKit
+import SCSDKCreativeKit
 
 class MainViewController: UIViewController {
     
+    enum STATES {
+        case backlog
+        case feed
+        case completed
+    }
+    
+    var currentState: STATES!
+    
+    var snapButton: UIButton!
+    var avatarImageView: UIImageView!
+    
+    //MAIN UI InstanceVariables
     var titleLabel: LTMorphingLabel!
     var addButton: UIButton!
-    var cards: [TaskCellView] = []
+    var addSpeechButton: UIButton!
 
+    var backgroundGradientView: UIImageView! //GradientView!
+    var backgroundGradient: GRADIENT!
+    var mainCardFrame: CGRect!
+    var backlogButton: UIButton!
+    var feedButton: UIButton!
+    var completedButton: UIButton!
+    var user: User!
+    var underline: UIView!
+    
+    //FEED INSTANCE VARIABLES
+    var addEventCell: AddEventCellView!
+    var addSpeechEventCell: AddSpeechEventCellView!
+    var feedCards: [TaskCellView] = []
+    var feedExpanded = false
+    
+    //BACKLOG INSTANCE VARIABLES
+    var backlogCards: [BacklogCellView] = []
+    var backlogExpanded = false
+    var backlogAddEventShowing = false
+    
+    //COMPLETED INSTANCE VARIABLES
+    var completedCards: [CompletedCellView] = []
+    var completedExpanded = false
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        initUI()
+        let user = User()
+        self.user = user
+        user.setupListeners()
+        TaskList.addSampleTasks()
+        AchievementList.setAchievements()
+        
+        mainCardFrame = CGRect(x: 20, y: 100, width: view.frame.width - 40, height: view.frame.width - 80)
+        initCommonUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        animateLabel()
-        initCells()
+        setCurrentState(.feed)
     }
     
-    func animateLabel() {
-        titleLabel.text = "five"
+    func animateLabel(withText: String) {
+        titleLabel.text = withText
     }
     
-    func initUI() {
-        view.backgroundColor = UIColor("#242C49")
+    func initCommonUI() {
+        //backgroundGradient = BACKGROUND_GRADIENT()
+        backgroundGradientView = UIImageView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
+        //backgroundGradientView.colors = backgroundGradient!.colors
+        //backgroundGradientView.locations = backgroundGradient!.locations
+        //backgroundGradientView.direction = backgroundGradient!.direction
+        //backgroundGradientView.backgroundColor = UIColor("#242C49")
+        backgroundGradientView.image = UIImage(named:"background")
+        view.addSubview(backgroundGradientView)
         titleLabel = LTMorphingLabel(frame: CGRect(x: 20, y: 10, width: 200, height: 90))
         titleLabel.textAlignment = .left
         titleLabel.textColor = .white
         titleLabel.morphingEffect = .evaporate
         titleLabel.morphingDuration = 1.5
-        titleLabel.font = UIFont(name: "Avenir", size: 36)
+        titleLabel.font = UIFont(name: "Quicksand-Bold", size: 36)
         view.addSubview(titleLabel)
         
         addButton = UIButton(frame: CGRect(x: view.frame.width - 60, y: 35, width: 40, height: 40))
         addButton.setImage(UIImage(named: "addIcon"), for: .normal)
-        addButton.addTarget(self, action: #selector(tappedAdd), for: .touchUpInside)
+        addButton.addTarget(self, action: #selector(tappedAddButton), for: .touchUpInside)
         view.addSubview(addButton)
+      
+        addSpeechButton = UIButton(frame: CGRect(x: view.frame.width - 60 - addButton.frame.width, y: 35, width: 40, height: 40))
+        addSpeechButton.setImage(UIImage(named: "microphone"), for: .normal)
+        addSpeechButton.addTarget(self, action: #selector(tappedSpeechAddButton), for: .touchUpInside)
+        view.addSubview(addSpeechButton)
+        
+        snapButton = UIButton(frame: CGRect(x: view.frame.width - 60 - addButton.frame.width - addSpeechButton.frame.width, y: 35, width: 40, height: 40))
+        snapButton.setImage(UIImage(named: "nikybitmoji"), for: .normal)
+        snapButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        view.addSubview(snapButton)
+      
+        initBottomButtons()
     }
     
-    func initCells() {
-        for x in 0..<5 {
-            let yVal = (100 * x) + 100
-            let width = Int(self.view.frame.width - 40)
-            let card = TaskCellView(frame: CGRect(x: 20, y: yVal, width: width, height: 80))
-            cards.append(card)
-            card.animation = "slideUp"
-            card.duration = 1.0
-        }
+    func initBottomButtons() {
+        let yVal = view.frame.height * 0.9
+        let dim: CGFloat = 50
+        let widthBase = view.frame.width
         
-        for (i, card) in cards.enumerated() {
-            let deadlineTime = DispatchTime.now() + .milliseconds(200 * i)
-            DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-                self.view.addSubview(card)
-                card.animate()
+        backlogButton = UIButton(frame: CGRect(x: widthBase * 0.25 - 20, y: yVal, width: dim, height: dim))
+        backlogButton.setImage(UIImage(named: "timerIcon"), for: .normal)
+        backlogButton.addTarget(self, action: #selector(tappedBacklog), for: .touchUpInside)
+        view.addSubview(backlogButton)
+        
+        feedButton = UIButton(frame: CGRect(x: widthBase * 0.5 - 20, y: yVal, width: dim, height: dim))
+        feedButton.setImage(UIImage(named: "checklistIcon"), for: .normal)
+        feedButton.addTarget(self, action: #selector(tappedFeed), for: .touchUpInside)
+        view.addSubview(feedButton)
+        
+        completedButton = UIButton(frame: CGRect(x: widthBase * 0.75 - 20, y: yVal, width: dim, height: dim))
+        completedButton.setImage(UIImage(named: "clipboardIcon"), for: .normal)
+        completedButton.addTarget(self, action: #selector(tappedCompleted), for: .touchUpInside)
+        view.addSubview(completedButton)
+        
+        underline = UIView(frame: CGRect(x: widthBase * 0.5 - 20, y: feedButton.frame.maxY + 5, width: dim, height: 2))
+        underline.backgroundColor = .white
+        view.addSubview(underline)
+    }
+    
+    @objc func tappedBacklog() {
+        switchStateTo(.backlog)
+    }
+    
+    @objc func tappedFeed() {
+        switchStateTo(.feed)
+    }
+    
+    @objc func tappedCompleted() {
+        switchStateTo(.completed)
+    }
+    
+    func switchStateTo(_ toState: STATES) {
+        let fromState = currentState
+        if fromState == STATES.backlog {
+            dismissBacklog {
+                self.setCurrentState(toState)
+            }
+        } else if fromState == STATES.feed {
+            dismissFeedState {
+                self.setCurrentState(toState)
+            }
+        } else if fromState == STATES.completed {
+            dismissCompleted {
+                self.setCurrentState(toState)
             }
         }
     }
     
-    @objc func tappedAdd() {
-        print("yay")
+    func sendNotification(title: String, subtitle: String) {
+        let banner = Banner(title: title, subtitle: subtitle, image: nil, backgroundColor: .red, didTapBlock: nil)
+        banner.show()
     }
-
-
+    
+    func setCurrentState(_ toState: STATES) {
+        animateUnderline(state: toState)
+        currentState = toState
+        if currentState == STATES.backlog {
+            initBacklogCells()
+            animateLabel(withText: "backlog")
+        } else if currentState == STATES.feed {
+            initFeedCells()
+            animateLabel(withText: "my five")
+        } else if currentState == STATES.completed {
+            initCompletedCells()
+            animateLabel(withText: "completed")
+        }
+    }
+    
+    func animateUnderline(state: STATES) {
+        var xVal: CGFloat!
+        if state == STATES.backlog {
+            xVal = view.frame.width * 0.25 - 20
+        } else if state == STATES.feed {
+            xVal = view.frame.width * 0.5 - 20
+        } else if state == STATES.completed {
+            xVal = view.frame.width * 0.75 - 20
+        }
+        UIView.animate(withDuration: 0.3) {
+            self.underline.frame = CGRect(x: xVal, y: self.feedButton.frame.maxY + 5, width: 50, height: 2)
+        }
+    }
+    
+    @objc func tappedAddButton() {
+        if currentState == .feed && !feedExpanded {
+            showAddEvent()
+        } else if currentState == .feed {
+            dismissAddEvent()
+        }
+        
+        if currentState == .backlog && !backlogAddEventShowing {
+            backlogShowAddEvent(speech: false)
+        } else if currentState == .backlog {
+            dismissBacklogAddView(speech: false)
+        }
+    }
+    
+    @objc func tappedSpeechAddButton() {
+        if currentState == .feed && !feedExpanded {
+            showAddEvent(speech: true)
+        } else if feedExpanded {
+            dismissAddEvent(speech: true)
+        }
+        
+        if currentState == .backlog && !backlogAddEventShowing {
+            backlogShowAddEvent(speech: true)
+        } else if currentState == .backlog {
+            dismissBacklogAddView(speech: true)
+        }
+    }
 }
 

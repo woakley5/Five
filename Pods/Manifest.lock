@@ -1,20 +1,77 @@
 PODS:
+  - Alamofire (4.7.3)
+  - BRYXBanner (0.8.3)
+  - ChameleonFramework (2.1.0):
+    - ChameleonFramework/Default (= 2.1.0)
+  - ChameleonFramework/Default (2.1.0)
+  - DatePicker (1.0.0):
+    - Extended (~> 1.0.4)
+  - Extended (1.0.4)
   - GradientView (2.3.3)
+  - PINCache (2.3)
+  - PINOperation (1.1.1)
+  - SkyFloatingLabelTextField (3.6.0)
+  - SnapSDK (1.1.3):
+    - SnapSDK/SCSDKBitmojiKit (= 1.1.3)
+    - SnapSDK/SCSDKCreativeKit (= 1.1.3)
+    - SnapSDK/SCSDKLoginKit (= 1.1.3)
+  - SnapSDK/SCSDKBitmojiKit (1.1.3):
+    - PINCache (~> 2.3)
+    - PINOperation (~> 1.1)
+  - SnapSDK/SCSDKCreativeKit (1.1.3):
+    - YYImage (~> 1.0.4)
+    - YYImage/WebP
+  - SnapSDK/SCSDKLoginKit (1.1.3)
+  - SwiftyJSON (4.2.0)
   - UIColor_Hex_Swift (4.2.0)
+  - YYImage (1.0.4):
+    - YYImage/Core (= 1.0.4)
+  - YYImage/Core (1.0.4)
+  - YYImage/WebP (1.0.4):
+    - YYImage/Core
 
 DEPENDENCIES:
+  - Alamofire
+  - BRYXBanner
+  - ChameleonFramework
+  - DatePicker (= 1.0.0)
   - GradientView
+  - SkyFloatingLabelTextField
+  - SnapSDK
+  - SwiftyJSON
   - UIColor_Hex_Swift (~> 4.2.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - BRYXBanner
+    - ChameleonFramework
+    - DatePicker
+    - Extended
     - GradientView
+    - PINCache
+    - PINOperation
+    - SkyFloatingLabelTextField
+    - SnapSDK
+    - SwiftyJSON
     - UIColor_Hex_Swift
+    - YYImage
 
 SPEC CHECKSUMS:
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  BRYXBanner: 8cf1b119792e1cee8d7ba107297ef89f7409bc53
+  ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
+  DatePicker: 7eb10cf9d75d2ff975e3724763d4df8f2cf96ce1
+  Extended: 94fe9d842694e7d81da413f5762d401829bbffd9
   GradientView: b044fa46c24062ee245a07a4e8bea4c5c4d63de0
+  PINCache: ce36ed282031b92fc7733ffe831f474ff80fddc2
+  PINOperation: a6219e6fc9db9c269eb7a7b871ac193bcf400aac
+  SkyFloatingLabelTextField: 38164979b79512f9ff9288ad8acfc4bbf5d843e3
+  SnapSDK: 9804a9c6df2e81edee54ba139902410d532efba8
+  SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
   UIColor_Hex_Swift: bc07fc197421ee896b9ed6dcfa2054b7fbf75145
+  YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
 
-PODFILE CHECKSUM: 7efc7bcab90ad798b93b744e269c1e07b7cdbb31
+PODFILE CHECKSUM: d2c6e5a8c93ad9e6ee6a3381c8ef62e307543dc9
 
-COCOAPODS: 1.5.2
+COCOAPODS: 1.5.3
